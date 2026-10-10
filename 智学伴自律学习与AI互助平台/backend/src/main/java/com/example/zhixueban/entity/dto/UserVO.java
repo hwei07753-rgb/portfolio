@@ -21,6 +21,7 @@ public class UserVO {
     private String studyGoal;
     private Integer role;
     private Integer status;
+    private Integer coins;
     private LocalDateTime createdAt;
 
     public static UserVO fromUser(User user) {
@@ -35,6 +36,7 @@ public class UserVO {
                 .studyGoal(user.getStudyGoal())
                 .role(user.getRole())
                 .status(user.getStatus())
+                .coins(user.getCoins() != null ? user.getCoins() : 0)
                 .createdAt(user.getCreatedAt())
                 .build();
     }

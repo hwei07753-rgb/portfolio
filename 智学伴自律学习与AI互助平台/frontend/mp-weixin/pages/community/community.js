@@ -8,22 +8,41 @@ Page({
     categories: ['全部', '求资料', '问问题', '经验分享'],
     selectedCategory: '全部',
     postCategories: ['求资料', '问问题', '经验分享'],
+    bountyOptions: [0, 10, 20, 50],
+    userCoins: 0,
+    currentUserId: null,
     posts: [],
     showCreateModal: false,
     newPost: {
       category: '求资料',
       title: '',
-      content: ''
+      content: '',
+      bountyCoins: 0
     },
     replyingPostId: null,
     replyContent: ''
   },
 
   onShow() {
+    this.initUserContext();
     this.fetchPosts();
   },
 
+  initUserContext() {
+    const userInfo = wx.getStorageSync('userInfo') || {};
+    this.setData({ currentUserId: userInfo.id || null });
+    // 获取用户最新积分余额
+    request.get('/user/stats', null, { loading: false, silentAuth: true, silentError: true })
+      .then(res => {
+        if (res && res.coins != null) {
+          this.setData({ userCoins: res.coins });
+        }
+      })
+      .catch(() => {});
+  },
+
   onPullDownRefresh() {
+    this.initUserContext();
     this.fetchPosts();
     wx.stopPullDownRefresh();
   },
@@ -115,7 +134,7 @@ Page({
     if (!app.checkLogin()) return;
     this.setData({
       showCreateModal: true,
-      newPost: { category: '求资料', title: '', content: '' }
+      newPost: { category: '求资料', title: '', content: '', bountyCoins: 0 }
     });
   },
 
@@ -128,6 +147,11 @@ Page({
     this.setData({ 'newPost.category': cat });
   },
 
+  selectBountyCoins(e) {
+    const coins = Number(e.currentTarget.dataset.coins) || 0;
+    this.setData({ 'newPost.bountyCoins': coins });
+  },
+
   onInputTitle(e) {
     this.setData({ 'newPost.title': e.detail.value });
   },
@@ -137,7 +161,7 @@ Page({
   },
 
   submitPost() {
-    const { category, title, content } = this.data.newPost;
+    const { category, title, content, bountyCoins } = this.data.newPost;
     if (!title.trim()) {
       wx.showToast({ title: '请输入帖子标题', icon: 'none' });
       return;
@@ -146,33 +170,57 @@ Page({
       wx.showToast({ title: '请输入帖子正文', icon: 'none' });
       return;
     }
+    const bounty = Number(bountyCoins) || 0;
+    if (bounty > 0 && bounty > (this.data.userCoins || 0)) {
+      wx.showToast({ title: `自律积分不足(当前${this.data.userCoins || 0}币)，无法悬赏`, icon: 'none' });
+      return;
+    }
 
     request.post('/post', {
       category: category,
       title: title.trim(),
-      content: content.trim()
+      content: content.trim(),
+      bountyCoins: bounty
     }).then(() => {
       wx.showToast({ title: '发帖成功，待审核', icon: 'success' });
       this.closeCreateModal();
+      this.initUserContext();
       this.fetchPosts();
-    }).catch(() => {
-      // 本地容错发布
-      const newPostItem = {
-        id: Date.now(),
-        userNickname: wx.getStorageSync('userInfo')?.nickname || '我',
-        userAvatar: '/images/tabbar/mine.png',
-        category: category,
-        title: title.trim(),
-        content: content.trim(),
-        timeDesc: '刚刚',
-        replyCount: 0,
-        replies: []
-      };
-      this.setData({
-        posts: [newPostItem, ...this.data.posts],
-        showCreateModal: false
-      });
-      wx.showToast({ title: '已发帖 (离线预览)', icon: 'none' });
+    }).catch(err => {
+      wx.showToast({ title: (err && err.message) || '发帖失败，请重试', icon: 'none' });
+    });
+  },
+
+  /**
+   * 楼主采纳最佳答案并转账悬赏金币
+   */
+  onAdoptReply(e) {
+    if (!app.checkLogin()) return;
+    const postId = e.currentTarget.dataset.postId;
+    const replyId = e.currentTarget.dataset.replyId;
+    if (!postId || !replyId) return;
+
+    wx.showModal({
+      title: '采纳最佳答案',
+      content: '确认将该学友的回复采纳为最佳答案并分发悬赏金币吗？结案后不可更改。',
+      confirmText: '确认采纳',
+      confirmColor: '#276449',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '采纳结算中...' });
+          request.post(`/post/${postId}/adopt/${replyId}`)
+            .then(() => {
+              wx.hideLoading();
+              wx.showToast({ title: '已成功采纳最佳答案！', icon: 'success' });
+              this.fetchPosts();
+              this.initUserContext();
+            })
+            .catch(err => {
+              wx.hideLoading();
+              wx.showToast({ title: (err && err.message) || '采纳失败，请稍后重试', icon: 'none' });
+            });
+        }
+      }
     });
   },
 

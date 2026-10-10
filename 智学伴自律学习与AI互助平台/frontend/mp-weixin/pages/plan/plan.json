@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "学业计划与任务清单",
+  "navigationBarBackgroundColor": "#F6F7F2",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#F6F7F2"
+}

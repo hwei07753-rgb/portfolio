@@ -1,0 +1,474 @@
+/* pages/plan/plan.wxss - 北欧素雅森系学业计划与清单样式 */
+.plan-page {
+  padding-bottom: 160rpx;
+}
+
+/* 头部卡片 */
+.plan-header-card {
+  background: linear-gradient(135deg, #FCFDF9 0%, #F1F6EB 100%);
+  border-radius: 28rpx;
+  padding: 36rpx 32rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid #E1E6DC;
+  box-shadow: 0 4rpx 16rpx rgba(39, 100, 73, 0.05);
+}
+
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  background-color: #EAF0E2;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  margin-bottom: 14rpx;
+}
+
+.badge-dot-live {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background-color: #276449;
+}
+
+.badge-text {
+  font-size: 22rpx;
+  color: #276449;
+  font-weight: 600;
+}
+
+.plan-title {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1F2922;
+  margin-bottom: 8rpx;
+}
+
+.plan-subtitle {
+  font-size: 24rpx;
+  color: #728479;
+  line-height: 1.5;
+}
+
+/* 模板推荐区 */
+.template-section {
+  background: #FCFDF9;
+  border-radius: 24rpx;
+  border: 1rpx solid #E1E6DC;
+  padding: 24rpx 28rpx;
+  margin-bottom: 28rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.03);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.section-icon {
+  font-size: 26rpx;
+}
+
+.section-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1F2922;
+}
+
+.section-tip {
+  font-size: 20rpx;
+  color: #8C9E92;
+}
+
+.template-scroll {
+  display: flex;
+  white-space: nowrap;
+  gap: 16rpx;
+  padding-bottom: 8rpx;
+}
+
+.template-card {
+  display: inline-block;
+  width: 320rpx;
+  background: #F7FAF3;
+  border: 1.5rpx solid #D8E3D2;
+  border-radius: 20rpx;
+  padding: 20rpx 20rpx 16rpx;
+  margin-right: 16rpx;
+  vertical-align: top;
+  white-space: normal;
+  transition: all 0.2s ease;
+}
+
+.template-card:active {
+  transform: scale(0.98);
+  background: #EEF5E6;
+}
+
+.tpl-tag {
+  display: inline-block;
+  font-size: 18rpx;
+  font-weight: 700;
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.tpl-tag-cet4 {
+  background: #EAF0E2;
+  color: #276449;
+}
+
+.tpl-tag-kaoyan {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.tpl-tag-exam {
+  background: #F1F5F9;
+  color: #334155;
+}
+
+.tpl-tag-habit {
+  background: #ECFDF5;
+  color: #047857;
+}
+
+.tpl-title {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #1F2922;
+  margin-bottom: 6rpx;
+  line-height: 1.3;
+}
+
+.tpl-desc {
+  font-size: 20rpx;
+  color: #728479;
+  line-height: 1.4;
+  height: 56rpx;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+}
+
+.tpl-btn {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #276449;
+  text-align: right;
+}
+
+/* 计划列表 */
+.list-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.list-title-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.list-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #276449;
+}
+
+.list-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1F2922;
+}
+
+.new-plan-link {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #276449;
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 24rpx;
+  color: #9AA79E;
+}
+
+.plan-card {
+  background: #FCFDF9;
+  border-radius: 24rpx;
+  border: 1rpx solid #E1E6DC;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.03);
+}
+
+.plan-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18rpx;
+}
+
+.plan-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex: 1;
+}
+
+.plan-cat-pill {
+  font-size: 20rpx;
+  font-weight: 700;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  background: #EAF0E2;
+  color: #276449;
+  white-space: nowrap;
+}
+
+.plan-item-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1F2922;
+}
+
+.btn-delete-plan {
+  font-size: 34rpx;
+  color: #94A3B8;
+  padding: 0 10rpx;
+  line-height: 1;
+}
+
+/* 进度追踪条 */
+.plan-progress-box {
+  background: #F7FAF3;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #E5EFE0;
+}
+
+.progress-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22rpx;
+  margin-bottom: 10rpx;
+}
+
+.days-pill {
+  color: #276449;
+  font-weight: 600;
+}
+
+.percent-txt {
+  color: #728479;
+}
+
+.progress-track {
+  height: 12rpx;
+  background: #E1E9DA;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3A8362 0%, #276449 100%);
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+/* 任务列表 */
+.tasks-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1.5rpx solid #E8EFE3;
+  border-radius: 16rpx;
+  padding: 16rpx 18rpx;
+  transition: all 0.2s ease;
+}
+
+.task-row-done {
+  background: #F8FAF6;
+  opacity: 0.75;
+}
+
+.checkbox-wrap {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 2rpx solid #A3B899;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 18rpx;
+  transition: all 0.2s ease;
+}
+
+.checkbox-checked {
+  background: #276449;
+  border-color: #276449;
+}
+
+.check-icon {
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #2D3A31;
+  line-height: 1.4;
+}
+
+.task-title-done {
+  text-decoration: line-through;
+  color: #9AA79E;
+}
+
+.task-meta {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 6rpx;
+}
+
+.coin-pill {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: #B45309;
+  background: #FEF3C7;
+  padding: 2rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.streak-pill {
+  font-size: 20rpx;
+  color: #D97706;
+}
+
+.task-delete-btn {
+  font-size: 32rpx;
+  color: #CBD5E1;
+  padding: 0 10rpx;
+}
+
+.add-task-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 16rpx;
+  border: 1.5rpx dashed #C8D6C2;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  color: #276449;
+  font-weight: 600;
+  margin-top: 10rpx;
+  background: #FAFBF8;
+}
+
+.add-task-icon {
+  font-size: 28rpx;
+}
+
+/* 底部悬浮新建按钮 */
+.fab-new-plan {
+  position: fixed;
+  right: 36rpx;
+  bottom: 40rpx;
+  background: linear-gradient(135deg, #2D7455 0%, #1E4E38 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 20rpx 36rpx;
+  border-radius: 50rpx;
+  box-shadow: 0 8rpx 24rpx rgba(39, 100, 73, 0.35);
+  z-index: 99;
+}
+
+.fab-icon {
+  font-size: 32rpx;
+}
+
+.fab-text {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+/* 弹窗通用样式 */
+.modal-field {
+  margin-bottom: 24rpx;
+}
+
+.field-label {
+  font-size: 24rpx;
+  color: #5C6F62;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.cat-pill-group {
+  display: flex;
+  gap: 12rpx;
+}
+
+.cat-pill {
+  flex: 1;
+  text-align: center;
+  padding: 12rpx 0;
+  font-size: 24rpx;
+  background: #F9FAF6;
+  border: 1.5rpx solid #E1E6DC;
+  border-radius: 14rpx;
+  color: #5C6F62;
+}
+
+.cat-pill-active {
+  background: #EAF0E2;
+  color: #276449;
+  border-color: #276449;
+  font-weight: 700;
+}
+
+.title-input {
+  width: 100%;
+  height: 80rpx;
+  background: #F9FAF6;
+  border: 1.5rpx solid #E1E6DC;
+  border-radius: 14rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  color: #1F2922;
+}
+
+.modal-btn {
+  width: 100%;
+  margin-top: 14rpx;
+}

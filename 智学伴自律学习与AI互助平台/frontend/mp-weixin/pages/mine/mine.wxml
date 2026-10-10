@@ -57,18 +57,38 @@
       <view class="telemetry-groove"></view>
       <view class="stat-col">
         <view class="col-num stat-mono">{{userStats.totalCheckins || 0}}</view>
-        <view class="stat-label">累计打卡 (天)</view>
+        <view class="col-label">累计打卡 (天)</view>
+      </view>
+      <view class="telemetry-groove"></view>
+      <view class="stat-col">
+        <view class="col-num stat-mono stat-gold">{{userStats.coins != null ? userStats.coins : (userInfo.coins || 0)}}</view>
+        <view class="col-label">自律金币 (币)</view>
       </view>
       <view class="telemetry-groove"></view>
       <view class="stat-col">
         <view class="col-num stat-mono">{{userStats.totalPosts || 0}}</view>
         <view class="col-label">互助信笺 (篇)</view>
-      </view>
-    </view>
+      </view></view>
   </view>
 
   <!-- 功能菜单卡片 -->
   <view class="card menu-card">
+    <!-- 学霸排行榜入口 -->
+    <view class="menu-item" bindtap="goToRank">
+      <view class="menu-left">
+        <text class="menu-bullet menu-bullet-gold"></text>
+        <text class="menu-label">🏆 学霸自律排行榜 (榜首领跑·超越差距)</text>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <!-- 阶段学业计划与清单入口 -->
+    <view class="menu-item" bindtap="goToPlan" wx:if="{{isLoggedIn}}">
+      <view class="menu-left">
+        <text class="menu-bullet menu-bullet-plan"></text>
+        <text class="menu-label">🎯 阶段学业计划与清单 (目标分解·每日打勾)</text>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
     <!-- S5 管理员专属入口 -->
     <view class="menu-item menu-item-admin" bindtap="openAdminModal" wx:if="{{isLoggedIn && userInfo.role === 1}}">
       <view class="menu-left">

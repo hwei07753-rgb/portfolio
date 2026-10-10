@@ -44,4 +44,22 @@ public class Post {
 
     @TableField("created_at")
     private LocalDateTime createdAt;
+
+    /**
+     * 悬赏金币（0表示无悬赏）
+     */
+    @TableField("bounty_coins")
+    private Integer bountyCoins;
+
+    /**
+     * 是否已解决（0=未解决 1=已解决）
+     */
+    @TableField("is_solved")
+    private Integer isSolved;
+
+    /**
+     * 采纳的最佳答案回复ID
+     */
+    @TableField("accepted_reply_id")
+    private Long acceptedReplyId;
 }

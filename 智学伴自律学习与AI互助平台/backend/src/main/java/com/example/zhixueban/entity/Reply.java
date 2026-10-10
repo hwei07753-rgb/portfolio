@@ -35,4 +35,10 @@ public class Reply {
 
     @TableField("created_at")
     private LocalDateTime createdAt;
+
+    /**
+     * 是否被采纳为最佳答案（0=未采纳 1=已采纳）
+     */
+    @TableField("is_accepted")
+    private Integer isAccepted;
 }

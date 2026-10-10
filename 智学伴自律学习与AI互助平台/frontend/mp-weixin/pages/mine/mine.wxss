@@ -584,3 +584,15 @@
   color: var(--primary-color);
   border: 1rpx solid #D5E2CF;
 }
+
+.stat-gold {
+  color: #B45309 !important;
+}
+
+.menu-bullet-gold {
+  background: #F59E0B !important;
+}
+
+.menu-bullet-plan {
+  background: #1E4E38 !important;
+}

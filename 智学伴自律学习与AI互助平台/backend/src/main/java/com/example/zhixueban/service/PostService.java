@@ -26,4 +26,7 @@ public interface PostService {
 
     /** 召唤 AI 助教为帖子生成答疑回复 */
     ReplyVO aiReply(Long userId, Long postId);
+
+    /** 采纳最佳答案（楼主专属：原子分发悬赏金币 + 标记结案） */
+    PostDetailVO adoptReply(Long userId, Long postId, Long replyId);
 }

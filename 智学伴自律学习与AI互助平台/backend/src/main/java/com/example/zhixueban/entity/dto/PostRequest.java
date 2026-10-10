@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostRequest {
 
-    /** 分类：求资料/问问题/经验分享 */
+    /** 分类：求资料/问问题/经验分享/答疑求助 */
     @NotBlank(message = "帖子分类不能为空")
-    @Pattern(regexp = "求资料|问问题|经验分享", message = "分类只能是：求资料 / 问问题 / 经验分享")
+    @Pattern(regexp = "求资料|问问题|经验分享|答疑求助", message = "分类只能是：求资料 / 问问题 / 答疑求助 / 经验分享")
     private String category;
 
     @NotBlank(message = "标题不能为空")
@@ -29,4 +29,7 @@ public class PostRequest {
     @NotBlank(message = "内容不能为空")
     @Size(max = 2000, message = "内容最多 2000 字")
     private String content;
+
+    /** 悬赏学分金币（可选，默认 0） */
+    private Integer bountyCoins;
 }

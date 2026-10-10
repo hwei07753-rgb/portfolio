@@ -71,6 +71,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(rollbackFor = Exception.class)
     public PostVO create(Long userId, PostRequest request) {
         // 敏感词过滤（SRS §6.2.2）：标题+内容任一命中即拒绝
         String hit = sensitiveWordService.matchSensitive(
@@ -79,17 +80,74 @@ public class PostServiceImpl implements PostService {
             throw new BusinessException(ErrorCode.CONTENT_SENSITIVE);
         }
 
+        int bounty = request.getBountyCoins() != null ? Math.max(0, request.getBountyCoins()) : 0;
+        if (bounty > 0) {
+            User user = userMapper.selectById(userId);
+            if (user == null || user.getCoins() == null || user.getCoins() < bounty) {
+                throw new BusinessException(ErrorCode.INSUFFICIENT_COINS);
+            }
+            user.setCoins(user.getCoins() - bounty);
+            userMapper.updateById(user);
+        }
+
         Post post = Post.builder()
                 .userId(userId)
                 .category(request.getCategory().trim())
                 .title(request.getTitle().trim())
                 .content(request.getContent().trim())
+                .bountyCoins(bounty)
+                .isSolved(0)
                 .status(0) // 待审核
                 .createdAt(LocalDateTime.now())
                 .build();
         postMapper.insert(post);
-        log.info("发帖成功: id={}, userId={}, category={}", post.getId(), userId, post.getCategory());
+        log.info("发帖成功: id={}, userId={}, category={}, bounty={}", post.getId(), userId, post.getCategory(), bounty);
         return PostVO.fromEntity(post);
+    }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional(rollbackFor = Exception.class)
+    public PostDetailVO adoptReply(Long userId, Long postId, Long replyId) {
+        Post post = postMapper.selectById(postId);
+        if (post == null || post.getStatus() == 2) {
+            throw new BusinessException(ErrorCode.POST_NOT_FOUND);
+        }
+        if (!post.getUserId().equals(userId)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "仅楼主本人有权采纳最佳答案");
+        }
+        if (post.getIsSolved() != null && post.getIsSolved() == 1) {
+            throw new BusinessException(ErrorCode.POST_ALREADY_SOLVED);
+        }
+
+        Reply reply = replyMapper.selectById(replyId);
+        if (reply == null || !reply.getPostId().equals(postId)) {
+            throw new BusinessException(ErrorCode.REPLY_NOT_FOUND);
+        }
+        if (reply.getUserId().equals(userId)) {
+            throw new BusinessException(ErrorCode.CANNOT_ADOPT_OWN_REPLY);
+        }
+
+        // 1. 标记帖子已解决，并绑定被采纳的回复
+        post.setIsSolved(1);
+        post.setAcceptedReplyId(replyId);
+        postMapper.updateById(post);
+
+        // 2. 标记回复被采纳
+        reply.setIsAccepted(1);
+        replyMapper.updateById(reply);
+
+        // 3. 转账悬赏积分给回复者
+        int bounty = post.getBountyCoins() != null ? post.getBountyCoins() : 0;
+        if (bounty > 0) {
+            User replier = userMapper.selectById(reply.getUserId());
+            if (replier != null) {
+                replier.setCoins((replier.getCoins() != null ? replier.getCoins() : 0) + bounty);
+                userMapper.updateById(replier);
+            }
+        }
+        log.info("采纳最佳答案成功: postId={}, replyId={}, replierId={}, bounty={}", postId, replyId, reply.getUserId(), bounty);
+
+        return detail(postId);
     }
 
     @Override

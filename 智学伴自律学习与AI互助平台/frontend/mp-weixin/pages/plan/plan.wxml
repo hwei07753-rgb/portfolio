@@ -1,0 +1,217 @@
+<!-- pages/plan/plan.wxml - 阶段性学业计划与每日任务清单（北欧素雅森系排版） -->
+<view class="container plan-page">
+  <!-- 头部欢迎引言卡片 -->
+  <view class="plan-header-card">
+    <view class="plan-badge">
+      <text class="badge-dot-live"></text>
+      <text class="badge-text">目标分解 · 笃行清单</text>
+    </view>
+    <view class="plan-title">阶段学业计划与每日清单</view>
+    <view class="plan-subtitle">知所先后，则近道矣。拆解大目标为每日微习惯，打勾即获自律学分。</view>
+  </view>
+
+  <!-- 经典学业模板推荐区 (一键套用备考库) -->
+  <view class="section-card template-section">
+    <view class="section-header">
+      <view class="section-title-wrap">
+        <text class="section-icon">🌟</text>
+        <text class="section-title">官方经典备考模板 · 一键套用</text>
+      </view>
+      <text class="section-tip">快速导入分解任务</text>
+    </view>
+    
+    <scroll-view class="template-scroll" scroll-x enable-flex>
+      <view class="template-card" bindtap="applyTemplate" data-type="cet4">
+        <view class="tpl-tag tpl-tag-cet4">四六级通关</view>
+        <view class="tpl-title">英语四级 40 天高分冲刺</view>
+        <view class="tpl-desc">词汇背诵 + 历年听力 + 真题训练</view>
+        <view class="tpl-btn">一键套用 ›</view>
+      </view>
+
+      <view class="template-card" bindtap="applyTemplate" data-type="kaoyan">
+        <view class="tpl-tag tpl-tag-kaoyan">2027 考研</view>
+        <view class="tpl-title">高数与专业课自律筑基</view>
+        <view class="tpl-desc">强化题型演练 + 教材导图 + 专注</view>
+        <view class="tpl-btn">一键套用 ›</view>
+      </view>
+
+      <view class="template-card" bindtap="applyTemplate" data-type="final_exam">
+        <view class="tpl-tag tpl-tag-exam">期末不挂科</view>
+        <view class="tpl-title">大学期末考点冲刺稳过</view>
+        <view class="tpl-desc">考点大纲梳理 + 历年真题 + 社区互助</view>
+        <view class="tpl-btn">一键套用 ›</view>
+      </view>
+
+      <view class="template-card" bindtap="applyTemplate" data-type="self_discipline">
+        <view class="tpl-tag tpl-tag-habit">习惯养成</view>
+        <view class="tpl-title">大学自律微习惯 30 天</view>
+        <view class="tpl-desc">早起晨读 + 番茄专注 + 运动打卡</view>
+        <view class="tpl-btn">一键套用 ›</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 阶段计划列表 (我的在练计划) -->
+  <view class="plans-list">
+    <view class="list-title-bar">
+      <view class="list-title-left">
+        <text class="list-dot"></text>
+        <text class="list-title">我的在练计划 ({{plans.length}})</text>
+      </view>
+      <text class="new-plan-link" bindtap="openCreatePlanModal">+ 自定义计划</text>
+    </view>
+
+    <view wx:if="{{plans.length === 0}}" class="empty-tip">
+      暂未设定阶段计划，点击上方推荐模板一键导入吧！
+    </view>
+
+    <view wx:for="{{plans}}" wx:key="id" class="plan-card">
+      <view class="plan-card-header">
+        <view class="plan-header-left">
+          <text class="plan-cat-pill">{{item.category || '阶段学业'}}</text>
+          <text class="plan-item-title">{{item.title}}</text>
+        </view>
+        <text class="btn-delete-plan" catchtap="onDeletePlan" data-id="{{item.id}}" data-title="{{item.title}}">×</text>
+      </view>
+
+      <!-- 倒计时与进度看板 -->
+      <view class="plan-progress-box">
+        <view class="progress-info-row">
+          <view class="days-pill stat-mono">⏳ 剩余 {{item.daysRemaining}} 天 / 共 {{item.totalDays}} 天</view>
+          <view class="percent-txt stat-mono">{{item.completedTaskCount || 0}}/{{item.totalTaskCount || 0}} 项完成 ({{item.progressPercent || 0}}%)</view>
+        </view>
+        <view class="progress-track">
+          <view class="progress-fill" style="width: {{item.progressPercent || 0}}%;"></view>
+        </view>
+      </view>
+
+      <!-- 每日清单子任务列表 -->
+      <view class="tasks-box">
+        <view 
+          wx:for="{{item.tasks}}" 
+          wx:for-item="task" 
+          wx:key="id" 
+          class="task-row {{task.isCompleted === 1 ? 'task-row-done' : ''}}">
+          <view 
+            class="checkbox-wrap {{task.isCompleted === 1 ? 'checkbox-checked' : ''}}" 
+            catchtap="onToggleTask" 
+            data-id="{{task.id}}">
+            <text wx:if="{{task.isCompleted === 1}}" class="check-icon">✓</text>
+          </view>
+          <view class="task-info" catchtap="onToggleTask" data-id="{{task.id}}">
+            <view class="task-title {{task.isCompleted === 1 ? 'task-title-done' : ''}}">{{task.title}}</view>
+            <view class="task-meta">
+              <text class="coin-pill">🪙 +{{task.rewardCoins || 5}} 币</text>
+              <text wx:if="{{task.continuousDays > 0}}" class="streak-pill">🔥 连续 {{task.continuousDays}} 天</text>
+            </view>
+          </view>
+          <text class="task-delete-btn" catchtap="onDeleteTask" data-id="{{task.id}}">×</text>
+        </view>
+
+        <!-- 添加任务入口 -->
+        <view class="add-task-btn" bindtap="openAddTaskModal" data-plan-id="{{item.id}}">
+          <text class="add-task-icon">+</text>
+          <text>添加此计划今日子任务</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部悬浮新建按钮 -->
+  <view class="fab-new-plan" bindtap="openCreatePlanModal">
+    <text class="fab-icon">🎯</text>
+    <text class="fab-text">新建计划</text>
+  </view>
+
+  <!-- 创建自定义计划弹窗 -->
+  <view class="modal-mask" wx:if="{{showPlanModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title-wrap">
+          <text class="dot-badge"></text>
+          <text class="modal-title">创建阶段学业计划</text>
+        </view>
+        <text class="modal-close" bindtap="closePlanModal">×</text>
+      </view>
+
+      <view class="modal-field">
+        <text class="field-label">计划类别</text>
+        <view class="cat-pill-group">
+          <view 
+            wx:for="{{categories}}" 
+            wx:key="*this" 
+            class="cat-pill {{newPlan.category === item ? 'cat-pill-active' : ''}}"
+            data-cat="{{item}}"
+            bindtap="selectPlanCategory">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-field">
+        <text class="field-label">计划名称</text>
+        <input 
+          class="title-input" 
+          placeholder="如：大学英语四级40天通关计划" 
+          maxlength="40"
+          value="{{newPlan.title}}"
+          bindinput="onInputPlanTitle"
+        />
+      </view>
+
+      <view class="modal-field">
+        <text class="field-label">计划总天数</text>
+        <input 
+          class="title-input" 
+          type="number"
+          placeholder="默认 30 天" 
+          maxlength="3"
+          value="{{newPlan.totalDays}}"
+          bindinput="onInputPlanDays"
+        />
+      </view>
+
+      <button class="btn-primary modal-btn" bindtap="submitCreatePlan">立项并开启自律计划</button>
+    </view>
+  </view>
+
+  <!-- 添加子任务弹窗 -->
+  <view class="modal-mask" wx:if="{{showTaskModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title-wrap">
+          <text class="dot-badge"></text>
+          <text class="modal-title">添加每日任务清单项</text>
+        </view>
+        <text class="modal-close" bindtap="closeTaskModal">×</text>
+      </view>
+
+      <view class="modal-field">
+        <text class="field-label">每日执行内容</text>
+        <input 
+          class="title-input" 
+          placeholder="如：在扇贝背诵50个四级核心词汇" 
+          maxlength="60"
+          value="{{newTaskTitle}}"
+          bindinput="onInputTaskTitle"
+        />
+      </view>
+
+      <view class="modal-field">
+        <text class="field-label">完成奖励积分</text>
+        <view class="bounty-pill-group">
+          <view 
+            wx:for="{{[2, 5, 10]}}" 
+            wx:key="*this" 
+            class="bounty-pill {{newTaskCoins === item ? 'bounty-pill-active' : ''}}"
+            data-coins="{{item}}"
+            bindtap="selectTaskCoins">
+            🪙 +{{item}} 币
+          </view>
+        </view>
+      </view>
+
+      <button class="btn-primary modal-btn" bindtap="submitCreateTask">添加至清单</button>
+    </view>
+  </view>
+</view>

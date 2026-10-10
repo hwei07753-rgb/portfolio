@@ -1,0 +1,419 @@
+/* pages/rank/rank.wxss - 北欧素雅森系学霸排行榜样式 */
+.rank-page {
+  padding-bottom: 220rpx;
+}
+
+/* 头部卡片 */
+.rank-header-card {
+  background: linear-gradient(135deg, #FCFDF9 0%, #F1F5EB 100%);
+  border-radius: 28rpx;
+  padding: 36rpx 32rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid #E1E6DC;
+  box-shadow: 0 4rpx 16rpx rgba(39, 100, 73, 0.05);
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  background-color: #EAF0E2;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.badge-dot-live {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background-color: #276449;
+}
+
+.badge-text {
+  font-size: 22rpx;
+  color: #276449;
+  font-weight: 600;
+}
+
+.rank-title {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1F2922;
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+}
+
+.rank-subtitle {
+  font-size: 24rpx;
+  color: #728479;
+  line-height: 1.5;
+}
+
+/* 分段选项卡 */
+.tab-segment {
+  display: flex;
+  background: #E8ECE2;
+  border-radius: 20rpx;
+  padding: 8rpx;
+  margin-bottom: 30rpx;
+  gap: 8rpx;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  padding: 16rpx 0;
+  border-radius: 14rpx;
+  font-size: 24rpx;
+  color: #5C6F62;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tab-btn-icon {
+  font-size: 24rpx;
+}
+
+.tab-btn-active {
+  background: #FCFDF9;
+  color: #276449;
+  font-weight: 700;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 领奖台区域 (Top 3 Podium) */
+.podium-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
+  padding: 0 10rpx;
+}
+
+.podium-card {
+  flex: 1;
+  background: #FCFDF9;
+  border-radius: 24rpx;
+  border: 1rpx solid #E1E6DC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 12rpx 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.podium-placeholder {
+  flex: 1;
+}
+
+.podium-rank-1 {
+  transform: translateY(-16rpx);
+  background: linear-gradient(180deg, #FFFDF5 0%, #FCFDF9 100%);
+  border: 2rpx solid #F59E0B;
+  box-shadow: 0 8rpx 24rpx rgba(245, 158, 11, 0.15);
+  z-index: 2;
+}
+
+.podium-rank-2 {
+  border-color: #CBD5E1;
+}
+
+.podium-rank-3 {
+  border-color: #E2D9CE;
+}
+
+.crown-icon {
+  position: absolute;
+  top: -22rpx;
+  font-size: 32rpx;
+}
+
+.medal-tag {
+  font-size: 20rpx;
+  font-weight: 600;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.medal-gold {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.medal-silver {
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.medal-bronze {
+  background: #FFEDD5;
+  color: #9A3412;
+}
+
+.podium-avatar {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  border: 3rpx solid #E1E6DC;
+  margin-bottom: 10rpx;
+}
+
+.avatar-gold {
+  width: 106rpx;
+  height: 106rpx;
+  border: 4rpx solid #F59E0B;
+}
+
+.podium-name {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #2D3A31;
+  max-width: 170rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.podium-name-gold {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1F2922;
+}
+
+.podium-goal {
+  font-size: 20rpx;
+  color: #8C9E92;
+  margin: 4rpx 0 8rpx;
+  max-width: 170rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.podium-score {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #276449;
+  background: #EAF0E2;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+}
+
+.score-gold {
+  background: #FEF3C7;
+  color: #B45309;
+  font-size: 26rpx;
+}
+
+/* 列表卡片 */
+.rank-list-card {
+  background: #FCFDF9;
+  border-radius: 24rpx;
+  border: 1rpx solid #E1E6DC;
+  padding: 24rpx 28rpx;
+  box-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.03);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #EEF2E8;
+  margin-bottom: 16rpx;
+}
+
+.list-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1F2922;
+}
+
+.list-count {
+  font-size: 22rpx;
+  color: #8C9E92;
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 24rpx;
+  color: #9AA79E;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F3F6EF;
+}
+
+.rank-row:last-child {
+  border-bottom: none;
+}
+
+.rank-row-self {
+  background: #F4F8EE;
+  border-radius: 16rpx;
+  padding: 20rpx 14rpx;
+  margin: 6rpx 0;
+}
+
+.rank-num {
+  width: 50rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #728479;
+  text-align: center;
+}
+
+.row-avatar {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  margin: 0 18rpx 0 10rpx;
+  border: 1rpx solid #E1E6DC;
+}
+
+.row-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.row-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.row-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #2D3A31;
+}
+
+.self-pill {
+  font-size: 18rpx;
+  background: #276449;
+  color: #FFFFFF;
+  padding: 2rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.row-goal {
+  font-size: 22rpx;
+  color: #8C9E92;
+  margin-top: 4rpx;
+  max-width: 320rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-score {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #276449;
+}
+
+/* 底部吸底卡片 */
+.my-rank-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(252, 253, 249, 0.96);
+  backdrop-filter: blur(12px);
+  border-top: 1rpx solid #DCE3D6;
+  box-shadow: 0 -6rpx 20rpx rgba(0, 0, 0, 0.05);
+  padding: 20rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.dock-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dock-left {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.dock-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 3rpx solid #276449;
+}
+
+.dock-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.dock-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.dock-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1F2922;
+}
+
+.dock-rank-badge {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: #276449;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+}
+
+.dock-score {
+  font-size: 22rpx;
+  color: #5C6F62;
+  margin-top: 4rpx;
+}
+
+.dock-action {
+  background: #276449;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 14rpx 24rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(39, 100, 73, 0.25);
+}
+
+.dock-motivation {
+  margin-top: 14rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx dashed #E1E6DC;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.motivation-icon {
+  font-size: 22rpx;
+}
+
+.motivation-text {
+  font-size: 22rpx;
+  color: #728479;
+  line-height: 1.4;
+}

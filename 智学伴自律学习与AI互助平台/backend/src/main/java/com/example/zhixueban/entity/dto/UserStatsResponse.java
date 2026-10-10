@@ -25,4 +25,9 @@ public class UserStatsResponse {
      * 社区发帖总数
      */
     private Integer totalPosts;
+
+    /**
+     * 当前自律积分（金币）
+     */
+    private Integer coins;
 }

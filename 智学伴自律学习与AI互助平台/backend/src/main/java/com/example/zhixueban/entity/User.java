@@ -50,4 +50,10 @@ public class User {
 
     @TableField("created_at")
     private LocalDateTime createdAt;
+
+    /**
+     * 自律学分金币
+     */
+    @TableField("coins")
+    private Integer coins;
 }

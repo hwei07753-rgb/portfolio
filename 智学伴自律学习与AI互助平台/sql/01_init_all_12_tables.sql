@@ -107,13 +107,16 @@ CREATE TABLE `ai_review` (
 -- ------------------------------------------------------------
 DROP TABLE IF EXISTS `post`;
 CREATE TABLE `post` (
-  `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id`     BIGINT       NOT NULL COMMENT '发帖学员ID',
-  `category`    VARCHAR(30)  NOT NULL COMMENT '分类：考研互助/刷题答疑/经验分享/资料求取',
-  `title`       VARCHAR(100) NOT NULL COMMENT '帖子标题',
-  `content`     TEXT         NOT NULL COMMENT '帖子详情正文',
-  `status`      TINYINT      NOT NULL DEFAULT 1 COMMENT '0=待审核 1=正常展示 2=违规下架',
-  `created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发帖时间',
+  `id`                BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id`           BIGINT       NOT NULL COMMENT '发帖学员ID',
+  `category`          VARCHAR(30)  NOT NULL COMMENT '分类：考研互助/刷题答疑/经验分享/资料求取',
+  `title`             VARCHAR(100) NOT NULL COMMENT '帖子标题',
+  `content`           TEXT         NOT NULL COMMENT '帖子详情正文',
+  `bounty_coins`      INT          NOT NULL DEFAULT 0 COMMENT '悬赏金币积分',
+  `is_solved`         TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未解决 1=已采纳结案',
+  `accepted_reply_id` BIGINT       NULL     COMMENT '采纳的最佳答案回复ID',
+  `status`            TINYINT      NOT NULL DEFAULT 1 COMMENT '0=待审核 1=正常展示 2=违规下架',
+  `created_at`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发帖时间',
   PRIMARY KEY (`id`),
   KEY `idx_status` (`status`),
   KEY `idx_category_created` (`category`, `created_at`),
@@ -129,6 +132,7 @@ CREATE TABLE `reply` (
   `post_id`     BIGINT       NOT NULL COMMENT '所属帖子ID',
   `user_id`     BIGINT       NOT NULL COMMENT '回复者ID（999999为系统AI助教虚拟账号）',
   `content`     TEXT         NOT NULL COMMENT '回复内容/AI点拨思路',
+  `is_accepted` TINYINT      NOT NULL DEFAULT 0 COMMENT '0=普通回复 1=采纳为最佳答案',
   `created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '回复时间',
   PRIMARY KEY (`id`),
   KEY `idx_post_created` (`post_id`, `created_at`),
@@ -181,6 +185,46 @@ CREATE TABLE `sensitive_word` (
   UNIQUE KEY `uk_word` (`word`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='违规敏感词字典表';
 
+-- ------------------------------------------------------------
+-- 11. study_plan 阶段性学习计划表
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `study_plan`;
+CREATE TABLE `study_plan` (
+  `id`           BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id`      BIGINT       NOT NULL COMMENT '所属用户ID',
+  `title`        VARCHAR(100) NOT NULL COMMENT '计划标题（如：英语四级冲刺计划）',
+  `category`     VARCHAR(50)  NOT NULL DEFAULT '四六级' COMMENT '分类：四六级/考研/期末/自律',
+  `target_date`  DATE         NULL     COMMENT '目标截止日期',
+  `total_days`   INT          NOT NULL DEFAULT 30 COMMENT '总计划天数',
+  `status`       TINYINT      NOT NULL DEFAULT 0 COMMENT '状态：0=进行中 1=已完成 2=已归档',
+  `created_at`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_status` (`user_id`, `status`),
+  CONSTRAINT `fk_plan_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='阶段性学业计划表';
+
+-- ------------------------------------------------------------
+-- 12. study_task 每日学业任务清单表
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS `study_task`;
+CREATE TABLE `study_task` (
+  `id`               BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `plan_id`          BIGINT       NULL     COMMENT '关联阶段计划ID（可为空表示独立每日任务）',
+  `user_id`          BIGINT       NOT NULL COMMENT '所属用户ID',
+  `title`            VARCHAR(200) NOT NULL COMMENT '任务内容（如：背诵50个四级核心词汇）',
+  `reward_coins`     INT          NOT NULL DEFAULT 5 COMMENT '完成奖励金币',
+  `is_completed`     TINYINT      NOT NULL DEFAULT 0 COMMENT '今日是否已完成（0=未完成 1=已完成）',
+  `completed_at`     DATETIME     NULL     COMMENT '最近一次完成时间',
+  `continuous_days`  INT          NOT NULL DEFAULT 0 COMMENT '连续完成天数',
+  `created_at`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_plan` (`user_id`, `plan_id`),
+  KEY `idx_user_completed` (`user_id`, `is_completed`),
+  CONSTRAINT `fk_task_plan` FOREIGN KEY (`plan_id`) REFERENCES `study_plan` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_task_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='每日学业任务清单表';
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ============================================================
@@ -229,9 +273,24 @@ INSERT INTO `ai_review` (`checkin_id`, `user_id`, `content`, `model`) VALUES
 ON DUPLICATE KEY UPDATE `content` = VALUES(`content`);
 
 -- 6. 预置社区互助帖子与 AI 答疑示范
-INSERT INTO `post` (`id`, `user_id`, `category`, `title`, `content`, `status`, `created_at`) VALUES
-(1, 1, '问问题', '求教大家：快速排序的最坏时间复杂度为什么是 O(n²)，如何优化？', '在复习数据结构排序章节，理解快排平均复杂度是 O(n log n)，但在最坏情况下是 O(n²)，请问发生什么条件会触发最坏情况，工程中一般如何规避？', 1, NOW() - INTERVAL 2 HOUR)
+INSERT INTO `post` (`id`, `user_id`, `category`, `title`, `content`, `bounty_coins`, `is_solved`, `status`, `created_at`) VALUES
+(1, 1, '问问题', '求教大家：快速排序的最坏时间复杂度为什么是 O(n²)，如何优化？', '在复习数据结构排序章节，理解快排平均复杂度是 O(n log n)，但在最坏情况下是 O(n²)，请问发生什么条件会触发最坏情况，工程中一般如何规避？', 20, 1, 1, NOW() - INTERVAL 2 HOUR)
 ON DUPLICATE KEY UPDATE `title` = VALUES(`title`);
 
-INSERT INTO `reply` (`post_id`, `user_id`, `content`, `created_at`) VALUES
-(1, 999999, '【AI助教智能点拨】：\n同学你好！当待排序序列已经完全有序或逆序，且每次选取的基准值（Pivot）恰好是极值时，划分产生的两个子序列长度分别为 0 和 n-1，递归树退化为单链，此时时间复杂度退化为 O(n²)。\n💡 优化解法：\n1. 三数取中法（Median-of-Three）：取首、中、尾三元素的中位数作为基准；\n2. 随机化选择 Pivot：破坏有序输入的特征；\n3. 结合小规模切换插入排序：当子区间小于 16 时使用插入排序加速。', NOW() - INTERVAL 1 HOUR);
+INSERT INTO `reply` (`id`, `post_id`, `user_id`, `content`, `is_accepted`, `created_at`) VALUES
+(1, 1, 999999, '【AI助教智能点拨】：\n同学你好！当待排序序列已经完全有序或逆序，且每次选取的基准值（Pivot）恰好是极值时，划分产生的两个子序列长度分别为 0 和 n-1，递归树退化为单链，此时时间复杂度退化为 O(n²)。\n💡 优化解法：\n1. 三数取中法（Median-of-Three）：取首、中、尾三元素的中位数作为基准；\n2. 随机化选择 Pivot：破坏有序输入的特征；\n3. 结合小规模切换插入排序：当子区间小于 16 时使用插入排序加速。', 1, NOW() - INTERVAL 1 HOUR)
+ON DUPLICATE KEY UPDATE `content` = VALUES(`content`);
+
+-- 7. 预置阶段性学业计划与每日任务清单示范数据
+INSERT INTO `study_plan` (`id`, `user_id`, `title`, `category`, `target_date`, `total_days`, `status`)
+VALUES (1, 1, '大学英语四级(CET-4) 40天高分通关计划', '四六级', DATE_ADD(CURRENT_DATE, INTERVAL 38 DAY), 40, 0)
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`);
+
+INSERT INTO `study_task` (`id`, `plan_id`, `user_id`, `title`, `reward_coins`, `is_completed`, `continuous_days`)
+VALUES 
+(1, 1, 1, '📖 在扇贝/百词斩背诵 50 个四级核心词汇', 5, 1, 3),
+(2, 1, 1, '🎧 完成 1 篇历年四级听力真题精听', 5, 0, 0),
+(3, 1, 1, '⏱️ 番茄钟沉浸专注阅读与真题训练 45 分钟', 5, 0, 0),
+(4, 1, 1, '📝 睡前整理今日错题并在智学伴打卡复盘', 5, 0, 0)
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`);
+

@@ -445,3 +445,115 @@
   width: 100%;
   margin-top: 10rpx;
 }
+
+/* 悬赏求助与最佳答案闭环样式 */
+.badges-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.badge-bounty {
+  font-size: 20rpx;
+  font-weight: 700;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1rpx solid #FDE68A;
+}
+
+.badge-solved {
+  font-size: 20rpx;
+  font-weight: 700;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1rpx solid #BBF7D0;
+}
+
+.reply-item-accepted {
+  background: linear-gradient(180deg, #FFFDF5 0%, #FAF8EE 100%) !important;
+  border-left: 6rpx solid #F59E0B !important;
+  box-shadow: 0 4rpx 12rpx rgba(245, 158, 11, 0.08);
+}
+
+.accepted-tag {
+  font-size: 18rpx;
+  font-weight: 700;
+  background: #FEF3C7;
+  color: #B45309;
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+  margin-left: 8rpx;
+  border: 1rpx solid #FDE68A;
+}
+
+.adopt-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12rpx;
+}
+
+.adopt-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  background: #EAF0E2;
+  color: #276449;
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 8rpx 18rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid #BFD2B6;
+  transition: all 0.2s ease;
+}
+
+.adopt-action-btn:active {
+  background: #276449;
+  color: #FFFFFF;
+}
+
+.adopt-btn-icon {
+  font-size: 22rpx;
+}
+
+.field-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.coins-balance-hint {
+  font-size: 20rpx;
+  color: #728479;
+}
+
+.bounty-pill-group {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 10rpx;
+}
+
+.bounty-pill {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  background: #F9FAF6;
+  border: 1.5rpx solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 24rpx;
+  color: var(--text-sub);
+  transition: all 0.2s ease;
+}
+
+.bounty-pill-active {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #F59E0B;
+  font-weight: 700;
+  box-shadow: 0 2rpx 8rpx rgba(245, 158, 11, 0.15);
+}
+

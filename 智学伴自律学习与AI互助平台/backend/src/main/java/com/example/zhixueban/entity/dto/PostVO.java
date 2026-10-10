@@ -30,6 +30,12 @@ public class PostVO {
     private String authorNickname;
     /** 回复数 */
     private Integer replyCount;
+    /** 悬赏金币（0表示无悬赏） */
+    private Integer bountyCoins;
+    /** 0=未解决 1=已解决 */
+    private Integer isSolved;
+    /** 采纳的最佳回复ID */
+    private Long acceptedReplyId;
 
     public static PostVO fromEntity(Post post) {
         return PostVO.builder()
@@ -40,6 +46,9 @@ public class PostVO {
                 .content(post.getContent())
                 .status(post.getStatus())
                 .createdAt(post.getCreatedAt())
+                .bountyCoins(post.getBountyCoins() != null ? post.getBountyCoins() : 0)
+                .isSolved(post.getIsSolved() != null ? post.getIsSolved() : 0)
+                .acceptedReplyId(post.getAcceptedReplyId())
                 .replyCount(0)
                 .build();
     }

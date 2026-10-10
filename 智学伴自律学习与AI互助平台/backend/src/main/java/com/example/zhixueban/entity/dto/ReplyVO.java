@@ -26,6 +26,8 @@ public class ReplyVO {
     private String authorNickname;
     /** 是否为 AI 助教答疑 */
     private Boolean isAi;
+    /** 是否被采纳为最佳答案（0=否 1=是） */
+    private Integer isAccepted;
 
     public static ReplyVO fromEntity(Reply reply) {
         return ReplyVO.builder()
@@ -34,6 +36,7 @@ public class ReplyVO {
                 .userId(reply.getUserId())
                 .content(reply.getContent())
                 .createdAt(reply.getCreatedAt())
+                .isAccepted(reply.getIsAccepted() != null ? reply.getIsAccepted() : 0)
                 .isAi(false)
                 .build();
     }

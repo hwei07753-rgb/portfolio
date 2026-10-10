@@ -321,8 +321,20 @@ Page({
   showTips() {
     wx.showModal({
       title: '答辩与课设设计说明',
-      content: '系统采用前后端分离架构，核心后端基于 Spring Boot 3 + MyBatis-Plus + MySQL 8.0，数据库规范精简为 5 张核心业务表。AI复盘支持 DeepSeek / 通义千问大模型API调用。S5管理员模块支持平台宏观指标洞察与违规用户封禁解封闭环。',
+      content: '系统采用前后端分离架构，核心后端基于 Spring Boot 3 + MyBatis-Plus + MySQL 8.0。AI复盘支持 DeepSeek / 通义千问大模型API调用。独创“自律学分-悬赏答疑闭环”与“全维度自律学霸排行榜”，支持榜首领跑与超越差距动态激励。',
       showCancel: false
+    });
+  },
+
+  goToRank() {
+    wx.navigateTo({
+      url: '/pages/rank/rank'
+    });
+  },
+
+  goToPlan() {
+    wx.navigateTo({
+      url: '/pages/plan/plan'
     });
   }
 });

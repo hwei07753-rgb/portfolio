@@ -28,10 +28,14 @@ public class FocusServiceImpl implements FocusService {
 
     private final FocusRecordMapper focusRecordMapper;
     private final FocusTagMapper focusTagMapper;
+    private final com.example.zhixueban.mapper.UserMapper userMapper;
 
-    public FocusServiceImpl(FocusRecordMapper focusRecordMapper, FocusTagMapper focusTagMapper) {
+    public FocusServiceImpl(FocusRecordMapper focusRecordMapper,
+                            FocusTagMapper focusTagMapper,
+                            com.example.zhixueban.mapper.UserMapper userMapper) {
         this.focusRecordMapper = focusRecordMapper;
         this.focusTagMapper = focusTagMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -51,7 +55,20 @@ public class FocusServiceImpl implements FocusService {
                 .endTime(endTime)
                 .build();
         focusRecordMapper.insert(record);
-        log.info("专注记录已保存: userId={}, duration={}min, status={}", userId, record.getDurationMinutes(), status);
+
+        // 若专注顺利完成（status=0），发放自律积分奖励（每10分钟奖2分，至少奖2分）
+        if (status == 0) {
+            int earnedCoins = Math.max(2, (request.getDurationMinutes() != null ? request.getDurationMinutes() : 25) / 10 * 2);
+            com.example.zhixueban.entity.User user = userMapper.selectById(userId);
+            if (user != null) {
+                user.setCoins((user.getCoins() != null ? user.getCoins() : 0) + earnedCoins);
+                userMapper.updateById(user);
+            }
+            log.info("专注完成奖励自律积分: userId={}, duration={}min, earnedCoins={}", userId, record.getDurationMinutes(), earnedCoins);
+        } else {
+            log.info("专注记录已保存(未完成或放弃): userId={}, duration={}min, status={}", userId, record.getDurationMinutes(), status);
+        }
+
         return FocusRecordVO.fromEntity(record);
     }
 

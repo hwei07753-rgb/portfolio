@@ -10,7 +10,8 @@ Page({
     todayMinutes: 0,
     focusCount: 0,
     checkinDays: 0,
-    currentDate: ''
+    currentDate: '',
+    todaySummary: {}
   },
 
   onLoad() {
@@ -74,6 +75,48 @@ Page({
         }
       })
       .catch(() => {});
+
+    // 请求自律学霸榜概况展示 (GET /api/rank/leaderboard)
+    request.get('/rank/leaderboard', { type: 'day' }, { loading: false, silentAuth: true, silentError: true })
+      .then(res => {
+        if (res) {
+          let txt = '';
+          if (res.topList && res.topList.length > 0) {
+            const leader = res.topList[0];
+            txt = `今日榜首: ${leader.nickname} (${leader.scoreFormatted})`;
+            if (res.myRank && res.myRank.rank > 0) {
+              txt += ` · 我的排位: 第${res.myRank.rank}名`;
+            }
+          } else {
+            txt = '今日榜单虚位以待，快来开启专注抢占榜首！';
+          }
+          this.setData({ rankPreviewText: txt });
+        }
+      })
+      .catch(() => {});
+
+    // 请求学业计划与今日任务清单 (GET /api/plan/today-summary)
+    request.get('/plan/today-summary', null, { loading: false, silentAuth: true, silentError: true })
+      .then(res => {
+        if (res) {
+          this.setData({ todaySummary: res });
+        }
+      })
+      .catch(() => {});
+  },
+
+  onToggleHomeTask(e) {
+    if (!app.checkLogin()) return;
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    if (wx.vibrateShort) wx.vibrateShort({ type: 'light' });
+    request.post(`/plan/task/${id}/toggle`).then(res => {
+      const isDone = res && res.isCompleted === 1;
+      wx.showToast({ title: isDone ? '打勾完成 (+5 币 🪙)' : '已取消完成', icon: 'none' });
+      this.fetchTodayStats();
+    }).catch(err => {
+      wx.showToast({ title: (err && err.message) || '操作失败', icon: 'none' });
+    });
   },
 
   goToPomodoro() {
@@ -86,5 +129,13 @@ Page({
 
   goToCommunity() {
     wx.switchTab({ url: '/pages/community/community' });
+  },
+
+  goToRank() {
+    wx.navigateTo({ url: '/pages/rank/rank' });
+  },
+
+  goToPlan() {
+    wx.navigateTo({ url: '/pages/plan/plan' });
   }
 });

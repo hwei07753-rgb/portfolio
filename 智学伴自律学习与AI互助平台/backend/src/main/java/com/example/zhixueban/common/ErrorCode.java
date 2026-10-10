@@ -21,10 +21,14 @@ public enum ErrorCode {
     CHECKIN_CONTENT_EMPTY(2001, "打卡心得内容不能为空"),
     CHECKIN_ALREADY_DONE(2002, "今日已打卡，请勿重复提交"),
 
-    // 3xxx 社区互助模块
+    // 3xxx 社区互助与悬赏模块
     POST_NOT_FOUND(3001, "帖子不存在"),
     POST_DELETE_FORBIDDEN(3002, "无权删除该帖子"),
     POST_ALREADY_DELETED(3003, "帖子已被删除"),
+    POST_ALREADY_SOLVED(3004, "该求助悬赏已结案，无法重复采纳"),
+    INSUFFICIENT_COINS(3005, "自律积分不足以支付悬赏金币"),
+    REPLY_NOT_FOUND(3006, "回复记录不存在"),
+    CANNOT_ADOPT_OWN_REPLY(3007, "不能采纳自己的回复为最佳答案"),
 
     // 5xxx 系统全局错误
     SYSTEM_ERROR(500, "系统内部繁忙，请稍后再试");

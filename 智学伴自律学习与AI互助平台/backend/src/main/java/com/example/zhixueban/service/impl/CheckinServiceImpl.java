@@ -51,6 +51,7 @@ public class CheckinServiceImpl implements CheckinService {
     private final CheckinMapper checkinMapper;
     private final AiReviewMapper aiReviewMapper;
     private final SensitiveWordService sensitiveWordService;
+    private final com.example.zhixueban.mapper.UserMapper userMapper;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${llm.base-url:}")
@@ -64,10 +65,12 @@ public class CheckinServiceImpl implements CheckinService {
 
     public CheckinServiceImpl(CheckinMapper checkinMapper,
                               AiReviewMapper aiReviewMapper,
-                              SensitiveWordService sensitiveWordService) {
+                              SensitiveWordService sensitiveWordService,
+                              com.example.zhixueban.mapper.UserMapper userMapper) {
         this.checkinMapper = checkinMapper;
         this.aiReviewMapper = aiReviewMapper;
         this.sensitiveWordService = sensitiveWordService;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -116,7 +119,14 @@ public class CheckinServiceImpl implements CheckinService {
         checkin.setStatus(1);
         checkinMapper.updateById(checkin);
 
-        log.info("打卡提交成功: id={}, userId={}, aiReview={}", checkin.getId(), userId,
+        // 5. 奖励每日打卡自律积分（+10 币）
+        com.example.zhixueban.entity.User user = userMapper.selectById(userId);
+        if (user != null) {
+            user.setCoins((user.getCoins() != null ? user.getCoins() : 0) + 10);
+            userMapper.updateById(user);
+        }
+
+        log.info("打卡提交成功: id={}, userId={}, coinsAwarded=10, aiReview={}", checkin.getId(), userId,
                 StringUtils.hasText(aiReview) ? "AI生成" : "模板生成");
 
         CheckinVO vo = CheckinVO.fromEntity(checkin);

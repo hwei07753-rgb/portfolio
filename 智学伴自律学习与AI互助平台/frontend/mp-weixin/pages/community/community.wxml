@@ -31,9 +31,13 @@
             <text class="post-time stat-mono">{{item.timeDesc}}</text>
           </view>
         </view>
-        <text class="post-cat-badge {{item.category === '求资料' ? 'cat-sage' : (item.category === '问问题' ? 'cat-brass' : 'cat-primary')}}">
-          {{item.category}}
-        </text>
+        <view class="badges-row">
+          <text wx:if="{{item.bountyCoins && item.bountyCoins > 0}}" class="badge-bounty">🪙 悬赏 {{item.bountyCoins}} 币</text>
+          <text wx:if="{{item.isSolved === 1}}" class="badge-solved">✅ 已结案</text>
+          <text class="post-cat-badge {{item.category === '求资料' ? 'cat-sage' : (item.category === '问问题' ? 'cat-brass' : 'cat-primary')}}">
+            {{item.category}}
+          </text>
+        </view>
       </view>
 
       <view class="post-title">{{item.title}}</view>
@@ -41,13 +45,28 @@
 
       <!-- 回复列表信笺气泡 -->
       <view class="replies-section" wx:if="{{item.replies && item.replies.length > 0}}">
-        <view wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id" class="reply-item {{reply.isAi ? 'reply-item-ai' : ''}}">
+        <view wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id" class="reply-item {{reply.isAi ? 'reply-item-ai' : ''}} {{reply.isAccepted === 1 || reply.id === item.acceptedReplyId ? 'reply-item-accepted' : ''}}">
           <view class="reply-header-line">
             <text class="reply-user">{{reply.userNickname || reply.authorNickname || '学友'}}</text>
             <text wx:if="{{reply.isAi}}" class="ai-reply-tag">AI 助教 🌟</text>
+            <text wx:if="{{reply.isAccepted === 1 || reply.id === item.acceptedReplyId}}" class="accepted-tag">🏆 最佳答案</text>
             <text class="reply-colon">：</text>
           </view>
           <text class="reply-text {{reply.isAi ? 'reply-text-ai' : ''}}">{{reply.content}}</text>
+
+          <!-- 楼主专属采纳最佳答案操作按钮 -->
+          <view 
+            wx:if="{{item.userId === currentUserId && (item.isSolved === 0 || !item.isSolved) && reply.userId !== currentUserId}}" 
+            class="adopt-btn-row">
+            <view 
+              class="adopt-action-btn" 
+              catchtap="onAdoptReply" 
+              data-post-id="{{item.id}}" 
+              data-reply-id="{{reply.id}}">
+              <text class="adopt-btn-icon">🌟</text>
+              <text>采纳为最佳答案 (+{{item.bountyCoins || 0}}币)</text>
+            </view>
+          </view>
         </view>
       </view>
 
@@ -99,6 +118,24 @@
             data-cat="{{item}}"
             bindtap="selectPostCategory">
             {{item}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 学业悬赏金币 -->
+      <view class="modal-field">
+        <view class="field-label-row">
+          <text class="field-label">悬赏自律金币（激励答疑与采纳闭环）</text>
+          <text class="coins-balance-hint">可用积分: {{userCoins || 0}} 币</text>
+        </view>
+        <view class="bounty-pill-group">
+          <view 
+            wx:for="{{bountyOptions}}" 
+            wx:key="*this" 
+            class="bounty-pill {{newPost.bountyCoins === item ? 'bounty-pill-active' : ''}}"
+            data-coins="{{item}}"
+            bindtap="selectBountyCoins">
+            {{item === 0 ? '不悬赏' : ('🪙 ' + item + ' 币')}}
           </view>
         </view>
       </view>

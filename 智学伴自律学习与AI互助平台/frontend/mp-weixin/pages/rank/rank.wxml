@@ -1,0 +1,111 @@
+<!-- pages/rank/rank.wxml - 学霸自律排行榜（北欧素雅森系排版） -->
+<view class="container rank-page">
+  <!-- 头部引言卡片 -->
+  <view class="rank-header-card">
+    <view class="rank-badge">
+      <text class="badge-dot-live"></text>
+      <text class="badge-text">学风争优 · 笃行榜样</text>
+    </view>
+    <view class="rank-title">学霸自律排行榜</view>
+    <view class="rank-subtitle">不积跬步无以至千里，每一秒沉浸皆是未来底气</view>
+  </view>
+
+  <!-- 榜单维度切换器 (Segmented Control) -->
+  <view class="tab-segment">
+    <view 
+      wx:for="{{tabs}}" 
+      wx:key="key" 
+      class="tab-btn {{activeTab === item.key ? 'tab-btn-active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="switchTab">
+      <text class="tab-btn-icon">{{item.icon}}</text>
+      <text class="tab-btn-text">{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 领奖台区域 (Top 3 Podium) -->
+  <view class="podium-section" wx:if="{{top3.length > 0}}">
+    <!-- 第二名 (Silver) -->
+    <view class="podium-card podium-rank-2" wx:if="{{top3[1]}}">
+      <view class="medal-tag medal-silver">🥈 榜眼</view>
+      <image class="podium-avatar" src="{{top3[1].avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+      <view class="podium-name">{{top3[1].nickname}}</view>
+      <view class="podium-goal">{{top3[1].studyGoal || '专注备考'}}</view>
+      <view class="podium-score stat-mono">{{top3[1].scoreFormatted}}</view>
+    </view>
+    <view class="podium-placeholder" wx:else></view>
+
+    <!-- 第一名 (Gold - 领跑者) -->
+    <view class="podium-card podium-rank-1" wx:if="{{top3[0]}}">
+      <view class="crown-icon">👑</view>
+      <view class="medal-tag medal-gold">🥇 榜首领跑</view>
+      <image class="podium-avatar avatar-gold" src="{{top3[0].avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+      <view class="podium-name podium-name-gold">{{top3[0].nickname}}</view>
+      <view class="podium-goal">{{top3[0].studyGoal || '笃行致远'}}</view>
+      <view class="podium-score stat-mono score-gold">{{top3[0].scoreFormatted}}</view>
+    </view>
+
+    <!-- 第三名 (Bronze) -->
+    <view class="podium-card podium-rank-3" wx:if="{{top3[2]}}">
+      <view class="medal-tag medal-bronze">🥉 探花</view>
+      <image class="podium-avatar" src="{{top3[2].avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+      <view class="podium-name">{{top3[2].nickname}}</view>
+      <view class="podium-goal">{{top3[2].studyGoal || '自律笃行'}}</view>
+      <view class="podium-score stat-mono">{{top3[2].scoreFormatted}}</view>
+    </view>
+    <view class="podium-placeholder" wx:else></view>
+  </view>
+
+  <!-- 榜单列表 (Rank 4+) -->
+  <view class="rank-list-card">
+    <view class="list-header">
+      <text class="list-title">群雄逐鹿 · 荣耀排位</text>
+      <text class="list-count stat-mono">共 {{topList.length}} 位学霸上榜</text>
+    </view>
+
+    <view wx:if="{{remainingList.length === 0 && top3.length === 0}}" class="empty-tip">
+      暂无排位数据，快去开启番茄钟或完成打卡上榜吧！
+    </view>
+
+    <view 
+      wx:for="{{remainingList}}" 
+      wx:key="userId" 
+      class="rank-row {{item.isSelf ? 'rank-row-self' : ''}}">
+      <view class="rank-num stat-mono">{{item.rank}}</view>
+      <image class="row-avatar" src="{{item.avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+      <view class="row-info">
+        <view class="row-name-row">
+          <text class="row-name">{{item.nickname}}</text>
+          <text wx:if="{{item.isSelf}}" class="self-pill">我</text>
+        </view>
+        <text class="row-goal">{{item.studyGoal || '坚持每日自律'}}</text>
+      </view>
+      <view class="row-score stat-mono">{{item.scoreFormatted}}</view>
+    </view>
+  </view>
+
+  <!-- 底部吸底卡片：我的当前战报与超越激励 -->
+  <view class="my-rank-dock">
+    <view class="dock-top">
+      <view class="dock-left">
+        <image class="dock-avatar" src="{{myRank.avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+        <view class="dock-meta">
+          <view class="dock-name-row">
+            <text class="dock-name">{{myRank.nickname || '求索学伴'}}</text>
+            <text class="dock-rank-badge stat-mono">
+              {{myRank.rank > 0 ? ('第 ' + myRank.rank + ' 名') : '未上榜'}}
+            </text>
+          </view>
+          <view class="dock-score stat-mono">当前战绩：{{myRank.scoreFormatted || '0'}}</view>
+        </view>
+      </view>
+      <view class="dock-action" bindtap="goToStudy">
+        <text>去专注超越 ›</text>
+      </view>
+    </view>
+    <view class="dock-motivation" wx:if="{{motivationText}}">
+      <text class="motivation-icon">💡</text>
+      <text class="motivation-text">{{motivationText}}</text>
+    </view>
+  </view>
+</view>

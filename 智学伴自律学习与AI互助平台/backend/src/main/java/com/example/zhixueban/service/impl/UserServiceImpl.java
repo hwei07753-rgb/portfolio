@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserService {
                     .studyGoal("2027考研 / 四六级通关")
                     .role(0) // 学员角色
                     .status(0) // 正常状态
+                    .coins(100) // 初始自律积分
                     .createdAt(LocalDateTime.now())
                     .build();
             userMapper.insert(user);
@@ -170,10 +171,15 @@ public class UserServiceImpl implements UserService {
                         .ne(Post::getStatus, 2)
         );
 
+        // 4. 用户当前自律积分
+        User user = userMapper.selectById(userId);
+        int coins = (user != null && user.getCoins() != null) ? user.getCoins() : 0;
+
         return UserStatsResponse.builder()
                 .totalMinutes(totalMinutes)
                 .totalCheckins(checkinCount != null ? checkinCount.intValue() : 0)
                 .totalPosts(postCount != null ? postCount.intValue() : 0)
+                .coins(coins)
                 .build();
     }
 

@@ -68,4 +68,11 @@ public class PostController {
         ReplyVO vo = postService.aiReply(UserContext.getUserId(), id);
         return Result.success(vo, "AI 助教已解答");
     }
+
+    /** 采纳最佳答案（仅楼主可操作，需登录） */
+    @PostMapping("/post/{id}/adopt/{replyId}")
+    public Result<PostDetailVO> adopt(@PathVariable Long id, @PathVariable Long replyId) {
+        PostDetailVO vo = postService.adoptReply(UserContext.getUserId(), id, replyId);
+        return Result.success(vo, "采纳成功，悬赏积分已转账给答疑学伴！");
+    }
 }

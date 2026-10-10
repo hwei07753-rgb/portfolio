@@ -46,6 +46,72 @@
     </view>
   </view>
 
+  <!-- 今日待办清单组件 (Daily Task Checklist Widget) -->
+  <view class="card checklist-card">
+    <view class="checklist-header">
+      <view class="checklist-title-wrap">
+        <text class="checklist-dot"></text>
+        <text class="checklist-title">今日待办清单</text>
+        <text class="plan-sub-tag">{{todaySummary.activePlanTitle || '阶段目标推进中'}}</text>
+      </view>
+      <text class="manage-plan-link" bindtap="goToPlan">管理计划 ›</text>
+    </view>
+
+    <!-- 阶段进度微看板 -->
+    <view class="plan-mini-progress">
+      <view class="mini-progress-txt">
+        <text class="progress-days stat-mono">⏳ 倒计时 {{todaySummary.daysRemaining || 0}} 天</text>
+        <text class="progress-status stat-mono">已完成 {{todaySummary.completedCount || 0}}/{{todaySummary.totalCount || 0}} ({{todaySummary.progressPercent || 0}}%)</text>
+      </view>
+      <view class="mini-track">
+        <view class="mini-fill" style="width: {{todaySummary.progressPercent || 0}}%;"></view>
+      </view>
+    </view>
+
+    <!-- 任务项列表 (直接打勾) -->
+    <view class="checklist-items">
+      <view wx:if="{{!todaySummary.tasks || todaySummary.tasks.length === 0}}" class="checklist-empty">
+        暂无待办任务，点击右上角进入计划库导入模版吧
+      </view>
+
+      <view 
+        wx:for="{{todaySummary.tasks}}" 
+        wx:key="id" 
+        class="task-item {{item.isCompleted === 1 ? 'task-item-done' : ''}}"
+        catchtap="onToggleHomeTask"
+        data-id="{{item.id}}">
+        <view class="task-checkbox {{item.isCompleted === 1 ? 'checkbox-active' : ''}}">
+          <text wx:if="{{item.isCompleted === 1}}" class="check-mark">✓</text>
+        </view>
+        <view class="task-text-wrap">
+          <text class="task-name {{item.isCompleted === 1 ? 'task-name-done' : ''}}">{{item.title}}</text>
+        </view>
+        <text class="task-reward-pill">🪙 +{{item.rewardCoins || 5}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 学霸排行榜快捷导流卡片 (Nordic Botanical Banner) -->
+  <view class="card rank-banner-card" bindtap="goToRank">
+    <view class="rank-banner-left">
+      <view class="rank-banner-tag">
+        <text class="tag-medal">🏆</text>
+        <text class="tag-title">学霸自律排行榜</text>
+      </view>
+      <view class="rank-banner-headline">
+        <text class="banner-highlight">争做领跑者</text>
+        <text class="banner-sub">· 日榜/周榜/自律金币全维度竞逐</text>
+      </view>
+      <view class="rank-banner-status">
+        <text class="status-dot"></text>
+        <text class="status-txt">{{rankPreviewText || '点击查看今日学霸排位与超越差距'}}</text>
+      </view>
+    </view>
+    <view class="rank-banner-arrow">
+      <text class="arrow-icon">›</text>
+    </view>
+  </view>
+
   <!-- 核心功能快捷入口 -->
   <view class="card nav-card">
     <view class="card-title">
