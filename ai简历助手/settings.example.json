@@ -1,0 +1,9 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "your-api-key-here",
+    "ANTHROPIC_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "ANTHROPIC_MODEL": "qwen3.7-max",
+    "ANTHROPIC_VL_MODEL": "qwen-vl-max",
+    "API_TIMEOUT_MS": "300000"
+  }
+}
