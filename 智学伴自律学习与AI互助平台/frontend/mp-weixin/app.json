@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/pomodoro/pomodoro",
+    "pages/checkin/checkin",
+    "pages/community/community",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F6F7F2",
+    "navigationBarTitleText": "智学伴 · 笃行自律",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F6F7F2"
+  },
+  "tabBar": {
+    "color": "#77917B",
+    "selectedColor": "#276449",
+    "backgroundColor": "#FCFDF9",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/pomodoro/pomodoro",
+        "text": "专注",
+        "iconPath": "images/tabbar/timer.png",
+        "selectedIconPath": "images/tabbar/timer-active.png"
+      },
+      {
+        "pagePath": "pages/checkin/checkin",
+        "text": "打卡",
+        "iconPath": "images/tabbar/checkin.png",
+        "selectedIconPath": "images/tabbar/checkin-active.png"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区",
+        "iconPath": "images/tabbar/community.png",
+        "selectedIconPath": "images/tabbar/community-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/tabbar/mine.png",
+        "selectedIconPath": "images/tabbar/mine-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

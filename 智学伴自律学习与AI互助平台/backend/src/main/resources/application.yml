@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: zhixueban-backend
+
+# JWT 鉴权配置
+jwt:
+  secret: ${JWT_SECRET:zhixueban_jwt_secret_key_2026_super_secure_key_for_graduation_project}
+  expiration: 604800 # 7天，单位秒
+
+# 微信小程序接入配置（留空时自动启用开发联调模拟模式）
+wx:
+  miniapp:
+    appid: ${WX_APPID:wx_demo_zhixueban_appid}
+    secret: ${WX_SECRET:wx_demo_zhixueban_secret}
+
+# 大模型配置（OpenAI 兼容接口；未配置 api-key 时打卡 AI 复盘自动降级为本地模板）
+llm:
+  base-url: ${LLM_BASE_URL:https://api.deepseek.com/v1}
+  api-key: ${LLM_API_KEY:}
+  model: ${LLM_MODEL:deepseek-chat}
+

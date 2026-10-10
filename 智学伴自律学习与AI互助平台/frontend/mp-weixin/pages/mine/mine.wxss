@@ -1,0 +1,586 @@
+/* pages/mine/mine.wxss - 北欧素雅森系个人中心 */
+.mine-page {
+  padding-bottom: 60rpx;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.stats-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+/* 用户主卡片 */
+.user-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 38rpx 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-card);
+  border: 1.5rpx solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  border-left: 8rpx solid var(--primary-color);
+}
+
+.user-info-row {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-wrap {
+  width: 118rpx;
+  height: 118rpx;
+  border-radius: 50%;
+  padding: 4rpx;
+  background: var(--bg-card);
+  border: 1.5rpx solid var(--border-dark);
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 4rpx 14rpx rgba(39, 100, 73, 0.1);
+  margin-right: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.nickname-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-bottom: 12rpx;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5rpx;
+}
+
+.role-badge {
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: 1rpx solid #D5E2CF;
+  font-weight: 700;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.goal-pill-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #F4F6F0;
+  border: 1.5rpx solid #E0E7DC;
+  border-radius: var(--radius-full);
+  padding: 6rpx 20rpx;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+  transition: all 0.15s ease;
+  max-width: 95%;
+}
+
+.goal-pill-wrap:active {
+  background: var(--primary-light);
+}
+
+.goal-text {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goal-edit-icon {
+  font-size: 22rpx;
+  color: var(--primary-color);
+  margin-left: 4rpx;
+}
+
+/* 未登录提示 */
+.login-prompt {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28rpx;
+}
+
+.avatar-placeholder-wrap {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 50%;
+  background: #F4F6F0;
+  border: 2rpx dashed var(--border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 22rpx;
+}
+
+.avatar-placeholder {
+  width: 56rpx;
+  height: 56rpx;
+  opacity: 0.5;
+}
+
+.prompt-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 6rpx;
+}
+
+.prompt-sub {
+  font-size: 22rpx;
+  color: var(--text-sub);
+}
+
+.login-btns {
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-login {
+  flex: 2;
+  font-size: 28rpx;
+  padding: 22rpx;
+}
+
+.btn-demo {
+  flex: 1;
+  font-size: 26rpx;
+  padding: 22rpx;
+  background: #F4F6F0;
+  color: var(--text-main);
+  border: 1.5rpx solid var(--border-dark);
+  border-radius: var(--radius-full);
+  text-align: center;
+  font-weight: 700;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+/* 成就统计遥测条 (Sunken Telemetry Box) */
+.stats-card {
+  padding: 28rpx 30rpx 32rpx;
+}
+
+.telemetry-sunken-box {
+  background: var(--bg-sunken);
+  border-radius: var(--radius-md);
+  padding: 26rpx 16rpx;
+  border: 1.5rpx solid #DCE4D7;
+  box-shadow: var(--shadow-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-col {
+  text-align: center;
+  flex: 1;
+}
+
+.telemetry-groove {
+  width: 1rpx;
+  height: 64rpx;
+  background: #D4DED0;
+  box-shadow: 1rpx 0 0 #FFFFFF;
+  flex-shrink: 0;
+}
+
+.col-num {
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #1E4E38;
+  margin-bottom: 6rpx;
+  line-height: 1.05;
+  letter-spacing: -0.5rpx;
+}
+
+.col-label {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+/* 菜单列表卡片 */
+.menu-card {
+  padding: 6rpx 32rpx;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1.5rpx solid #EFF3EC;
+  transition: all 0.15s ease;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  opacity: 0.75;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.menu-bullet {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+.menu-label {
+  font-size: 28rpx;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.menu-arrow {
+  font-size: 34rpx;
+  color: var(--text-light);
+}
+
+/* 退出登录 (Ghost Button) */
+.btn-logout {
+  width: 100%;
+  background: #FAF8F6;
+  color: var(--accent-terracotta);
+  border: 1.5rpx solid #F0DDD8;
+  font-size: 28rpx;
+  border-radius: var(--radius-full);
+  margin-top: 24rpx;
+  padding: 22rpx;
+  font-weight: 700;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+  transition: transform 0.12s ease;
+}
+
+.btn-logout:active {
+  transform: translateY(2rpx);
+}
+
+/* 弹窗通用 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(32, 53, 44, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 30rpx;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  width: 100%;
+  border-radius: var(--radius-lg);
+  padding: 40rpx 34rpx;
+  box-shadow: 0 20rpx 50rpx rgba(26, 46, 37, 0.25);
+  border: 1.5rpx solid var(--border-color);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22rpx;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.modal-close {
+  font-size: 40rpx;
+  color: var(--text-light);
+  line-height: 1;
+  padding: 0 8rpx;
+}
+
+.goal-input {
+  width: 100%;
+  height: 80rpx;
+  background: #F9FAF6;
+  border: 1.5rpx solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  margin-bottom: 24rpx;
+  color: var(--text-main);
+  box-shadow: inset 0 1rpx 3rpx rgba(32, 53, 44, 0.03);
+}
+
+.goal-input:focus {
+  border-color: var(--primary-color);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4rpx rgba(39, 100, 73, 0.1);
+}
+
+.modal-btn {
+  width: 100%;
+}
+
+/* ==================== S5 管理员控制台微触样式 ==================== */
+.role-admin {
+  background: var(--accent-brass-light) !important;
+  color: #8C6F2A !important;
+  border-color: #EEDEB8 !important;
+}
+
+.btn-admin-demo {
+  background: var(--accent-brass-light) !important;
+  color: #8C6F2A !important;
+  border-color: #EEDEB8 !important;
+}
+
+.menu-item-admin {
+  background: #F4F8F1;
+  margin: 10rpx -16rpx;
+  padding: 24rpx 16rpx !important;
+  border-radius: var(--radius-sm);
+  border-bottom: none !important;
+}
+
+.menu-bullet-admin {
+  background: #B59955 !important;
+  box-shadow: 0 0 0 4rpx rgba(181, 153, 85, 0.2);
+}
+
+.menu-label-admin {
+  color: var(--primary-color) !important;
+  font-weight: 700 !important;
+}
+
+.admin-modal-content {
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 4格宏观数据面板 */
+.admin-stats-grid {
+  display: flex;
+  background: var(--bg-sunken);
+  border-radius: var(--radius-md);
+  padding: 20rpx 10rpx;
+  margin-bottom: 24rpx;
+  border: 1.5rpx solid #DCE4D7;
+  box-shadow: var(--shadow-sunken);
+}
+
+.admin-stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.admin-stat-num {
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #1E4E38;
+  line-height: 1.1;
+  margin-bottom: 4rpx;
+}
+
+.admin-stat-label {
+  font-size: 18rpx;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+/* 用户治理分区 */
+.admin-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+
+.admin-section-title {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.admin-user-count {
+  font-size: 20rpx;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.admin-search-row {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.admin-search-input {
+  flex: 1;
+  height: 72rpx;
+  background: #F9FAF6;
+  border: 1.5rpx solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  color: var(--text-main);
+  box-shadow: inset 0 1rpx 3rpx rgba(32, 53, 44, 0.03);
+}
+
+.admin-search-input:focus {
+  border-color: var(--primary-color);
+  background: #FFFFFF;
+}
+
+.btn-search {
+  padding: 0 28rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  background: var(--primary-color);
+  color: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1rpx solid #1A4733;
+}
+
+/* 用户滚动列表 */
+.admin-user-list {
+  max-height: 380rpx;
+  background: #F8FAF5;
+  border: 1.5rpx solid #E2EADA;
+  border-radius: var(--radius-md);
+  padding: 10rpx 16rpx;
+  box-shadow: inset 0 1rpx 3rpx rgba(0, 0, 0, 0.02);
+}
+
+.admin-user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #EAEFE6;
+}
+
+.admin-user-row:last-child {
+  border-bottom: none;
+}
+
+.user-row-left {
+  flex: 1;
+}
+
+.user-row-name-line {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 6rpx;
+}
+
+.user-row-name {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.user-role-tag {
+  font-size: 18rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  background: #E8EFE5;
+  color: var(--text-sub);
+  font-weight: 600;
+}
+
+.tag-admin {
+  background: var(--accent-brass-light);
+  color: #8C6F2A;
+  border: 1rpx solid #EEDEB8;
+}
+
+.user-status-tag {
+  font-size: 18rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  font-weight: 600;
+}
+
+.tag-normal {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.tag-banned {
+  background: #FAF2F0;
+  color: var(--accent-terracotta);
+}
+
+.user-row-sub {
+  display: flex;
+  gap: 14rpx;
+  font-size: 20rpx;
+  color: var(--text-light);
+}
+
+.user-row-id {
+  font-weight: 600;
+}
+
+.user-row-openid {
+  color: var(--text-light);
+}
+
+.btn-user-action {
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.btn-ban {
+  background: #FAF4F2;
+  color: var(--accent-terracotta);
+  border: 1rpx solid #F0DDD8;
+}
+
+.btn-unban {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: 1rpx solid #D5E2CF;
+}

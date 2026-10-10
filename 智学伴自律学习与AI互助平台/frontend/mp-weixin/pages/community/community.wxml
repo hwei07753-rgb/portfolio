@@ -1,0 +1,154 @@
+<!-- pages/community/community.wxml - 北欧素雅森系互助广场 -->
+<view class="container community-page">
+  <!-- 顶部分类胶囊选项卡 (Segmented Control Bar) -->
+  <view class="category-tabs">
+    <view 
+      wx:for="{{categories}}" 
+      wx:key="*this" 
+      class="tab-item {{selectedCategory === item ? 'tab-item-active' : ''}}"
+      data-cat="{{item}}"
+      bindtap="onSelectCategory">
+      <text wx:if="{{item === '全部'}}">全部信笺</text>
+      <text wx:elif="{{item === '求资料'}}">求资料</text>
+      <text wx:elif="{{item === '问问题'}}">答疑求助</text>
+      <text wx:elif="{{item === '经验分享'}}">经验分享</text>
+      <text wx:else>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 帖子列表 (学友信笺卡片) -->
+  <view class="posts-list">
+    <view wx:if="{{posts.length === 0}}" class="empty-tip">
+      当前分类暂无交流信笺，快来写下第一篇互助笔记吧。
+    </view>
+
+    <view wx:for="{{posts}}" wx:key="id" class="post-card">
+      <view class="post-header">
+        <view class="author-info">
+          <image class="author-avatar" src="{{item.userAvatar || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+          <view class="author-meta">
+            <text class="author-name">{{item.userNickname || '热心学友'}}</text>
+            <text class="post-time stat-mono">{{item.timeDesc}}</text>
+          </view>
+        </view>
+        <text class="post-cat-badge {{item.category === '求资料' ? 'cat-sage' : (item.category === '问问题' ? 'cat-brass' : 'cat-primary')}}">
+          {{item.category}}
+        </text>
+      </view>
+
+      <view class="post-title">{{item.title}}</view>
+      <view class="post-content">{{item.content}}</view>
+
+      <!-- 回复列表信笺气泡 -->
+      <view class="replies-section" wx:if="{{item.replies && item.replies.length > 0}}">
+        <view wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id" class="reply-item {{reply.isAi ? 'reply-item-ai' : ''}}">
+          <view class="reply-header-line">
+            <text class="reply-user">{{reply.userNickname || reply.authorNickname || '学友'}}</text>
+            <text wx:if="{{reply.isAi}}" class="ai-reply-tag">AI 助教 🌟</text>
+            <text class="reply-colon">：</text>
+          </view>
+          <text class="reply-text {{reply.isAi ? 'reply-text-ai' : ''}}">{{reply.content}}</text>
+        </view>
+      </view>
+
+      <!-- 底部互动操作条 -->
+      <view class="post-footer">
+        <view class="reply-count" bindtap="openReplyInput" data-post-id="{{item.id}}">
+          <text class="footer-icon">💬</text>
+          <text class="stat-mono">{{item.replyCount || 0}}</text>
+          <text class="reply-count-label">条回复交流</text>
+        </view>
+        <view class="footer-actions">
+          <view class="ai-assist-btn" bindtap="onCallAiAssistant" data-post-id="{{item.id}}">
+            <text class="ai-btn-icon">✨</text>
+            <text>召唤 AI 助教</text>
+          </view>
+          <view class="reply-btn" bindtap="openReplyInput" data-post-id="{{item.id}}">
+            <text>写回复 ✎</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 悬浮素雅发帖按钮 -->
+  <view class="fab-post" bindtap="openCreateModal">
+    <text class="fab-icon">✎</text>
+    <text class="fab-text">发笺</text>
+  </view>
+
+  <!-- 发帖弹窗 -->
+  <view class="modal-mask" wx:if="{{showCreateModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title-wrap">
+          <text class="dot-badge"></text>
+          <text class="modal-title">写一篇互助小笺</text>
+        </view>
+        <text class="modal-close" bindtap="closeCreateModal">×</text>
+      </view>
+
+      <!-- 选择分类 -->
+      <view class="modal-field">
+        <text class="field-label">选择信笺分类</text>
+        <view class="cat-pill-group">
+          <view 
+            wx:for="{{postCategories}}" 
+            wx:key="*this" 
+            class="cat-pill {{newPost.category === item ? 'cat-pill-active' : ''}}"
+            data-cat="{{item}}"
+            bindtap="selectPostCategory">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 标题 -->
+      <view class="modal-field">
+        <text class="field-label">信笺标题</text>
+        <input 
+          class="title-input" 
+          placeholder="给这篇小笺起个清晰的标题（5~50字）" 
+          maxlength="50"
+          value="{{newPost.title}}"
+          bindinput="onInputTitle"
+        />
+      </view>
+
+      <!-- 正文 -->
+      <view class="modal-field">
+        <text class="field-label">信笺正文内容</text>
+        <textarea 
+          class="body-textarea" 
+          placeholder="详细说说你的疑惑、心得体会或寻找的学习资料..." 
+          maxlength="1000"
+          value="{{newPost.content}}"
+          bindinput="onInputPostContent"
+        />
+      </view>
+
+      <button class="btn-primary modal-btn" bindtap="submitPost">温情发布小笺</button>
+    </view>
+  </view>
+
+  <!-- 回复输入弹窗 -->
+  <view class="modal-mask" wx:if="{{replyingPostId}}">
+    <view class="modal-content reply-modal">
+      <view class="modal-header">
+        <view class="modal-title-wrap">
+          <text class="dot-badge"></text>
+          <text class="modal-title">发表温情回复</text>
+        </view>
+        <text class="modal-close" bindtap="closeReplyInput">×</text>
+      </view>
+      <textarea 
+        class="reply-textarea" 
+        placeholder="写下你的热心解答或鼓励建议..." 
+        maxlength="200"
+        value="{{replyContent}}"
+        bindinput="onInputReplyContent"
+      />
+      <button class="btn-primary modal-btn" bindtap="submitReply">发送回复</button>
+    </view>
+  </view>
+</view>

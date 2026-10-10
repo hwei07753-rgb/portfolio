@@ -1,0 +1,567 @@
+/* pages/pomodoro/pomodoro.wxss - 北欧素雅森系高质感专注设计 */
+.pomodoro-page {
+  padding-bottom: 60rpx;
+}
+
+.tag-selector {
+  margin-bottom: 24rpx;
+}
+
+.label-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.label-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.label-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+.label-text {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5rpx;
+}
+
+.label-hint {
+  font-size: 20rpx;
+  color: var(--text-light);
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.tag-pill {
+  font-size: 24rpx;
+  padding: 10rpx 26rpx;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  color: var(--text-sub);
+  border: 1.5rpx solid var(--border-color);
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 2rpx 6rpx rgba(39, 100, 73, 0.03);
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.tag-pill:active {
+  transform: translateY(1rpx);
+}
+
+.tag-pill-active {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border-color: #BFD2B6;
+  font-weight: 700;
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 2rpx 6rpx rgba(39, 100, 73, 0.08);
+}
+
+/* 计时圆盘大卡片 */
+.timer-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 40rpx 30rpx;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  border: 1.5rpx solid var(--border-color);
+  margin-bottom: 28rpx;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.timer-card-running {
+  border-color: #BFD2B6;
+  box-shadow: 0 12rpx 36rpx rgba(39, 100, 73, 0.1);
+}
+
+/* 环形动态进度外圈 (Sunken Instrument Bezel) */
+.progress-ring-outer {
+  width: 480rpx;
+  height: 480rpx;
+  border-radius: 50%;
+  margin: 10rpx auto 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx;
+  box-shadow: inset 0 2rpx 6rpx rgba(32, 53, 44, 0.15), 0 8rpx 30rpx rgba(39, 100, 73, 0.1), 0 0 0 2rpx #FFFFFF;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  transform: translateZ(0);
+}
+
+/* 呼吸环内部容器 */
+.breathing-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #FCFDF9 60%, #F1F5EB 100%);
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: inset 0 2rpx 6rpx rgba(0, 0, 0, 0.04);
+  transform: translateZ(0);
+}
+
+.dial-inner-track {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  border: 2rpx dashed #CFDEC8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-active {
+  animation: ringPulse 3.8s infinite ease-in-out;
+  will-change: box-shadow;
+}
+
+@keyframes ringPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(39, 100, 73, 0.25), inset 0 0 24rpx rgba(39, 100, 73, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 0 22rpx rgba(39, 100, 73, 0), inset 0 0 40rpx rgba(39, 100, 73, 0.12);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(39, 100, 73, 0.25), inset 0 0 24rpx rgba(39, 100, 73, 0.05);
+  }
+}
+
+.current-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-size: 22rpx;
+  padding: 6rpx 22rpx;
+  border-radius: var(--radius-full);
+  margin-bottom: 16rpx;
+  font-weight: 700;
+  border: 1rpx solid #D5E2CF;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.badge-leaf {
+  font-size: 20rpx;
+}
+
+.countdown-display {
+  font-size: 104rpx;
+  font-weight: 800;
+  color: #1A3E2F;
+  letter-spacing: 3rpx;
+  line-height: 1;
+  margin-bottom: 16rpx;
+  text-shadow: 0 2rpx 4rpx rgba(26, 62, 47, 0.08);
+}
+
+.status-tip {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-tip-running {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* 时长预设胶囊 */
+.duration-presets {
+  display: flex;
+  justify-content: center;
+  gap: 16rpx;
+}
+
+.preset-item {
+  font-size: 24rpx;
+  padding: 10rpx 26rpx;
+  border-radius: var(--radius-full);
+  background: #F4F6F0;
+  color: var(--text-sub);
+  border: 1.5rpx solid #E0E7DC;
+  font-weight: 600;
+  box-sizing: border-box;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+  transition: all 0.15s ease;
+}
+
+.preset-item:active {
+  transform: translateY(1rpx);
+}
+
+.preset-active {
+  background: linear-gradient(180deg, #2D7455 0%, #20563E 100%);
+  color: #FFFFFF;
+  border-color: #1A4733;
+  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.28), 0 4rpx 14rpx rgba(39, 100, 73, 0.3);
+}
+
+/* 伴学白噪音卡片 */
+.noise-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 24rpx 28rpx;
+  margin-bottom: 24rpx;
+  border: 1.5rpx solid var(--border-color);
+  box-shadow: var(--shadow-card);
+}
+
+.noise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.noise-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.noise-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+.noise-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5rpx;
+}
+
+.noise-state {
+  font-size: 22rpx;
+  color: var(--primary-color);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.noise-state-active {
+  opacity: 1;
+}
+
+.noise-pills {
+  display: flex;
+  gap: 12rpx;
+}
+
+.noise-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 14rpx 0;
+  border-radius: var(--radius-full);
+  background: #F8FAF5;
+  border: 1.5rpx solid #E2EADA;
+  font-size: 22rpx;
+  color: var(--text-sub);
+  font-weight: 500;
+  box-sizing: border-box;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+  transition: all 0.15s ease;
+}
+
+.noise-pill:active {
+  transform: translateY(1rpx);
+}
+
+.noise-pill-active {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border-color: #BFD2B6;
+  font-weight: 700;
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 2rpx 6rpx rgba(39, 100, 73, 0.08);
+}
+
+.noise-icon {
+  font-size: 22rpx;
+}
+
+.noise-name {
+  font-size: 22rpx;
+}
+
+/* 操作控制区 */
+.action-bar {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 28rpx;
+}
+
+.btn-large {
+  flex: 1;
+  font-size: 30rpx;
+  padding: 24rpx;
+}
+
+.btn-action {
+  font-size: 28rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  padding: 22rpx 0;
+  text-align: center;
+  transition: transform 0.12s ease;
+}
+
+.btn-action:active {
+  transform: translateY(2rpx);
+}
+
+.btn-pause {
+  flex: 1;
+  background: #F4F6F0;
+  color: var(--text-main);
+  border: 1.5rpx solid var(--border-dark);
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 2rpx 6rpx rgba(0, 0, 0, 0.02);
+}
+
+.btn-finish {
+  flex: 1.5;
+  background: linear-gradient(180deg, #2D7455 0%, #20563E 100%);
+  color: #FFFFFF;
+  border: 1.5rpx solid #1A4733;
+  box-shadow: var(--shadow-btn);
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.18);
+}
+
+.btn-abandon {
+  flex: 1;
+  background: #FAF8F6;
+  color: var(--accent-terracotta);
+  border: 1.5rpx solid #F0DDD8;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+
+/* 专注历史手账卡片 */
+.history-card {
+  padding-bottom: 16rpx;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.record-count-badge {
+  font-size: 20rpx;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22rpx 0;
+  border-bottom: 1.5rpx solid #EFF3EC;
+}
+
+.record-item:last-child {
+  border-bottom: none;
+}
+
+.record-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.record-tag-badge {
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: var(--radius-full);
+  background: #F4F6F0;
+  color: var(--text-main);
+  border: 1rpx solid #E0E7DC;
+  font-weight: 600;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.record-time {
+  font-size: 22rpx;
+  color: var(--text-light);
+}
+
+.record-right {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.record-duration {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.record-badge {
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+.badge-success {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: 1rpx solid #D5E2CF;
+}
+
+.badge-abandon {
+  background: #FAF5F4;
+  color: var(--accent-terracotta);
+  border: 1rpx solid #F5DDD8;
+}
+
+/* 专注完成专属手账印章庆祝弹窗 (Nordic Letterpress Seal) */
+.stamp-modal-mask {
+  background: rgba(32, 53, 44, 0.6);
+}
+
+.stamp-modal-content {
+  text-align: center;
+  padding: 50rpx 36rpx 42rpx;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  position: relative;
+  overflow: hidden;
+  border: 1.5rpx solid var(--border-color);
+  box-shadow: 0 20rpx 50rpx rgba(26, 46, 37, 0.25);
+}
+
+/* 双环北欧印章 */
+.stamp-seal-badge {
+  width: 176rpx;
+  height: 176rpx;
+  border-radius: 50%;
+  margin: 0 auto 30rpx;
+  border: 5rpx solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx;
+  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.6), 0 6rpx 18rpx rgba(39, 100, 73, 0.2);
+  animation: stampDrop 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes stampDrop {
+  0% {
+    transform: scale(2.6) rotate(-20deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(0.94) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(-3deg);
+    opacity: 1;
+  }
+}
+
+.seal-inner-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2rpx dashed var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+}
+
+.seal-main-text {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: var(--primary-color);
+  letter-spacing: 2rpx;
+}
+
+.seal-sub-text {
+  font-size: 16rpx;
+  color: var(--text-sub);
+  margin-top: 4rpx;
+  letter-spacing: 1rpx;
+  font-weight: 600;
+}
+
+.stamp-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 16rpx;
+}
+
+.stamp-pill-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-bottom: 24rpx;
+  background: #F4F6F0;
+  padding: 8rpx 24rpx;
+  border-radius: var(--radius-full);
+  border: 1rpx solid #E0E7DC;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.stamp-pill-tag {
+  font-size: 22rpx;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.stamp-pill-mins {
+  font-size: 22rpx;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.stamp-quote-box {
+  font-size: 26rpx;
+  color: #384F44;
+  line-height: 1.7;
+  background: #F8FAF5;
+  border: 1.5rpx dashed #C8DAC0;
+  border-radius: var(--radius-md);
+  padding: 24rpx;
+  margin-bottom: 28rpx;
+}
+
+.stamp-btn {
+  width: 100%;
+}

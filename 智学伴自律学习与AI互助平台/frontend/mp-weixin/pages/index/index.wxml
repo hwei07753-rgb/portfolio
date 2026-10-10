@@ -1,0 +1,99 @@
+<!-- pages/index/index.wxml - 北欧素雅森系排版风格 -->
+<view class="container">
+  <!-- 头部欢迎卡片 (Editorial Botanical Header) -->
+  <view class="header-card">
+    <view class="header-info">
+      <view class="greeting-badge">
+        <text class="badge-dot-live"></text>
+        <text class="badge-text">第 {{checkinDays || 1}} 天 · 笃行致远</text>
+      </view>
+      <view class="greeting">{{greeting}}，{{userInfo.nickname || '求索者'}}</view>
+      <view class="goal-pill">
+        <text class="goal-label">专注方向：</text>
+        <text class="goal-val">{{userInfo.studyGoal || '暂未设定目标 · 开启今日专注'}}</text>
+      </view>
+    </view>
+    <view class="avatar-container">
+      <image class="header-avatar" src="{{userInfo.avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+    </view>
+  </view>
+
+  <!-- 今日学习看板 (Nordic Sunken Telemetry Panel - 汲取扫雷俱乐部凹陷式仪表板质感) -->
+  <view class="card telemetry-card">
+    <view class="telemetry-header">
+      <view class="telemetry-title-wrap">
+        <text class="telemetry-dot"></text>
+        <text class="telemetry-title">今日自律数据看板</text>
+      </view>
+      <text class="telemetry-tag">实时同步</text>
+    </view>
+    
+    <view class="telemetry-sunken-box">
+      <view class="telemetry-col">
+        <view class="stat-num stat-mono">{{todayMinutes}}</view>
+        <view class="stat-label">专注时长 (分)</view>
+      </view>
+      <view class="telemetry-groove"></view>
+      <view class="telemetry-col">
+        <view class="stat-num stat-mono">{{focusCount}}</view>
+        <view class="stat-label">专注完成 (轮)</view>
+      </view>
+      <view class="telemetry-groove"></view>
+      <view class="telemetry-col">
+        <view class="stat-num stat-mono">{{checkinDays}}</view>
+        <view class="stat-label">连续打卡 (天)</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 核心功能快捷入口 -->
+  <view class="card nav-card">
+    <view class="card-title">
+      <text>自律日常 · 快捷进入</text>
+      <text class="nav-title-sub">KEEP GOING</text>
+    </view>
+    <view class="quick-nav-grid">
+      <view class="nav-item" bindtap="goToPomodoro">
+        <view class="nav-icon-wrap">
+          <image class="nav-icon" src="/images/tabbar/timer-active.png"></image>
+        </view>
+        <view class="nav-text">番茄钟专注</view>
+        <view class="nav-desc">沉浸自律时段</view>
+      </view>
+
+      <view class="nav-item" bindtap="goToCheckin">
+        <view class="nav-icon-wrap">
+          <image class="nav-icon" src="/images/tabbar/checkin-active.png"></image>
+        </view>
+        <view class="nav-text">每日打卡</view>
+        <view class="nav-desc">AI 导师复盘指引</view>
+      </view>
+
+      <view class="nav-item" bindtap="goToCommunity">
+        <view class="nav-icon-wrap">
+          <image class="nav-icon" src="/images/tabbar/community-active.png"></image>
+        </view>
+        <view class="nav-text">互助广场</view>
+        <view class="nav-desc">经验·答疑·资料</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 北欧活字便签 / 每日自律小笺 -->
+  <view class="memo-card">
+    <view class="memo-watermark">“</view>
+    <view class="memo-header">
+      <view class="memo-tag">
+        <text class="memo-tag-dot"></text>
+        <text class="memo-title">每日智学微笺</text>
+      </view>
+      <text class="memo-date stat-mono">{{currentDate}}</text>
+    </view>
+    <view class="memo-content">
+      所谓自由，不是随心所欲，而是自我主宰。每一次小小的静心专注，都是在为未来构筑更坚实的底气。行远自迩，笃行不怠。
+    </view>
+    <view class="memo-footer">
+      <text class="memo-sign">智学伴 · 笃行求知</text>
+    </view>
+  </view>
+</view>

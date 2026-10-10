@@ -1,0 +1,353 @@
+/* pages/index/index.wxss - 北欧高质感森系微触排版 */
+
+/* 头部欢迎卡片 */
+.header-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 38rpx 32rpx;
+  color: var(--text-main);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+  border: 1.5rpx solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8rpx;
+  height: 100%;
+  background: linear-gradient(180deg, #2D7455 0%, #1E4E38 100%);
+  border-radius: 8rpx 0 0 8rpx;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.greeting-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  background: var(--primary-light);
+  border-radius: var(--radius-full);
+  padding: 6rpx 20rpx;
+  margin-bottom: 14rpx;
+  border: 1rpx solid #D5E2CF;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.badge-dot-live {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+  animation: livePulse 2s infinite ease-in-out;
+}
+
+@keyframes livePulse {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0.8; }
+}
+
+.badge-text {
+  font-size: 20rpx;
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 0.5rpx;
+}
+
+.greeting {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 14rpx;
+  letter-spacing: -0.5rpx;
+  line-height: 1.25;
+}
+
+.goal-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 22rpx;
+  background: #F4F6F0;
+  border: 1rpx solid #E0E7DC;
+  padding: 6rpx 18rpx;
+  border-radius: var(--radius-sm);
+  max-width: 95%;
+  box-shadow: inset 0 1rpx 2rpx rgba(32, 53, 44, 0.03);
+}
+
+.goal-label {
+  color: var(--text-light);
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.goal-val {
+  color: var(--text-sub);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar-container {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  padding: 4rpx;
+  background: var(--bg-card);
+  border: 1.5rpx solid var(--border-dark);
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 4rpx 14rpx rgba(39, 100, 73, 0.1);
+  margin-left: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* 遥测数据看板 (借鉴扫雷俱乐部凹陷式仪表板质感) */
+.telemetry-card {
+  padding: 28rpx 30rpx 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.telemetry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.telemetry-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.telemetry-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+.telemetry-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.5rpx;
+}
+
+.telemetry-tag {
+  font-size: 20rpx;
+  color: var(--primary-color);
+  background: var(--primary-light);
+  padding: 4rpx 14rpx;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  border: 1rpx solid #D5E2CF;
+}
+
+/* 凹槽面板 (Sunken Panel) */
+.telemetry-sunken-box {
+  background: var(--bg-sunken);
+  border-radius: var(--radius-md);
+  padding: 26rpx 16rpx;
+  border: 1.5rpx solid #DCE4D7;
+  box-shadow: var(--shadow-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.telemetry-col {
+  flex: 1;
+  text-align: center;
+}
+
+/* 双线微槽分割器 */
+.telemetry-groove {
+  width: 1rpx;
+  height: 64rpx;
+  background: #D4DED0;
+  box-shadow: 1rpx 0 0 #FFFFFF;
+  flex-shrink: 0;
+}
+
+.stat-num {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #1E4E38;
+  line-height: 1.05;
+  margin-bottom: 8rpx;
+  letter-spacing: -1rpx;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+/* 快捷入口卡片 */
+.nav-card {
+  padding-bottom: 30rpx;
+}
+
+.nav-title-sub {
+  font-size: 18rpx;
+  color: var(--text-light);
+  letter-spacing: 2rpx;
+  font-weight: 600;
+}
+
+.quick-nav-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.nav-item {
+  flex: 1;
+  background: #F9FAF6;
+  border-radius: var(--radius-md);
+  padding: 28rpx 12rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.5rpx solid #E2EADA;
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 2rpx 8rpx rgba(39, 100, 73, 0.03);
+  transition: all 0.15s ease;
+}
+
+.nav-item:active {
+  background: var(--primary-light);
+  border-color: #CADBC2;
+  transform: translateY(2rpx);
+  box-shadow: inset 0 1rpx 2rpx rgba(32, 53, 44, 0.06);
+}
+
+.nav-icon-wrap {
+  width: 78rpx;
+  height: 78rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14rpx;
+  background: var(--primary-light);
+  border: 1.5rpx solid #D5E2CF;
+  box-shadow: inset 0 2rpx 4rpx rgba(39, 100, 73, 0.06), 0 2rpx 6rpx rgba(0, 0, 0, 0.02);
+}
+
+.nav-icon {
+  width: 42rpx;
+  height: 42rpx;
+}
+
+.nav-text {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4rpx;
+}
+
+.nav-desc {
+  font-size: 20rpx;
+  color: var(--text-sub);
+  line-height: 1.3;
+}
+
+/* 活字自律小笺卡片 */
+.memo-card {
+  background: var(--bg-card);
+  border: 1.5rpx solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 34rpx 32rpx 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  border-left: 8rpx solid var(--primary-color);
+}
+
+.memo-watermark {
+  position: absolute;
+  right: 18rpx;
+  top: -10rpx;
+  font-size: 130rpx;
+  font-family: Georgia, serif;
+  color: rgba(39, 100, 73, 0.05);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.memo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.memo-tag {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.memo-tag-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+.memo-title {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: 0.8rpx;
+}
+
+.memo-date {
+  font-size: 20rpx;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.memo-content {
+  font-size: 26rpx;
+  color: #384F44;
+  line-height: 1.8;
+  margin-bottom: 16rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.memo-footer {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+}
+
+.memo-sign {
+  font-size: 20rpx;
+  color: var(--text-light);
+  letter-spacing: 0.5rpx;
+  font-weight: 500;
+}

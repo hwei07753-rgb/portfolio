@@ -1,0 +1,218 @@
+<!-- pages/mine/mine.wxml - 北欧素雅森系个人中心 -->
+<view class="container mine-page">
+  <!-- 用户信息主卡片 (Editorial Profile Card) -->
+  <view class="user-card">
+    <block wx:if="{{isLoggedIn}}">
+      <view class="user-info-row">
+        <view class="avatar-wrap">
+          <image class="avatar" src="{{userInfo.avatarUrl || '/images/tabbar/mine.png'}}" mode="aspectFill"></image>
+        </view>
+        <view class="user-details">
+          <view class="nickname-row">
+            <text class="nickname">{{userInfo.nickname || '学习者'}}</text>
+            <text class="role-badge {{userInfo.role === 1 ? 'role-admin' : ''}}">
+              {{userInfo.role === 1 ? '管理员' : '陪伴学友'}}
+            </text>
+          </view>
+          <view class="goal-pill-wrap" bindtap="openGoalModal">
+            <text class="goal-text">学业方向：{{userInfo.studyGoal || '点击设定当前学业目标'}}</text>
+            <text class="goal-edit-icon">✎</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="login-prompt">
+        <view class="avatar-placeholder-wrap">
+          <image class="avatar-placeholder" src="/images/tabbar/mine.png"></image>
+        </view>
+        <view class="prompt-text">
+          <view class="prompt-title">欢迎加入智学伴</view>
+          <view class="prompt-sub">登录后开启专属自律档案与 AI 导师复盘</view>
+        </view>
+      </view>
+      <view class="login-btns">
+        <button class="btn-primary btn-login" bindtap="handleWxLogin">微信登录</button>
+        <button class="btn-demo" bindtap="handleDemoLogin">学员体验</button>
+        <button class="btn-demo btn-admin-demo" bindtap="handleAdminLogin">管理员</button>
+      </view>
+    </block>
+  </view>
+
+  <!-- 个人学业成就遥测统计 (Sunken Telemetry Dashboard) -->
+  <view class="card stats-card" wx:if="{{isLoggedIn}}">
+    <view class="card-title">
+      <view class="title-left">
+        <text class="stats-dot"></text>
+        <text>学习成长足迹</text>
+      </view>
+      <text class="text-muted">全阶段累计</text>
+    </view>
+    <view class="telemetry-sunken-box">
+      <view class="stat-col">
+        <view class="col-num stat-mono">{{userStats.totalMinutes || 0}}</view>
+        <view class="col-label">累计专注 (分)</view>
+      </view>
+      <view class="telemetry-groove"></view>
+      <view class="stat-col">
+        <view class="col-num stat-mono">{{userStats.totalCheckins || 0}}</view>
+        <view class="stat-label">累计打卡 (天)</view>
+      </view>
+      <view class="telemetry-groove"></view>
+      <view class="stat-col">
+        <view class="col-num stat-mono">{{userStats.totalPosts || 0}}</view>
+        <view class="col-label">互助信笺 (篇)</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单卡片 -->
+  <view class="card menu-card">
+    <!-- S5 管理员专属入口 -->
+    <view class="menu-item menu-item-admin" bindtap="openAdminModal" wx:if="{{isLoggedIn && userInfo.role === 1}}">
+      <view class="menu-left">
+        <text class="menu-bullet menu-bullet-admin"></text>
+        <text class="menu-label menu-label-admin">管理员控制台 (平台指标与用户治理)</text>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+
+    <view class="menu-item" bindtap="openGoalModal" wx:if="{{isLoggedIn}}">
+      <view class="menu-left">
+        <text class="menu-bullet"></text>
+        <text class="menu-label">学习目标与方向设定</text>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-item" bindtap="showAbout">
+      <view class="menu-left">
+        <text class="menu-bullet"></text>
+        <text class="menu-label">关于智学伴自律平台</text>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+    <view class="menu-item" bindtap="showTips">
+      <view class="menu-left">
+        <text class="menu-bullet"></text>
+        <text class="menu-label">答辩与课设设计说明</text>
+      </view>
+      <view class="menu-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <button class="btn-logout" wx:if="{{isLoggedIn}}" bindtap="handleLogout">退出当前登录</button>
+
+  <!-- 修改目标弹窗 -->
+  <view class="modal-mask" wx:if="{{showGoalModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title-wrap">
+          <text class="dot-badge"></text>
+          <text class="modal-title">设定学业目标</text>
+        </view>
+        <text class="modal-close" bindtap="closeGoalModal">×</text>
+      </view>
+      <input 
+        class="goal-input" 
+        placeholder="例如：2027考研上岸 / 英语六级550+" 
+        maxlength="20"
+        value="{{newStudyGoal}}"
+        bindinput="onInputStudyGoal"
+      />
+      <button class="btn-primary modal-btn" bindtap="saveStudyGoal">保存学业目标</button>
+    </view>
+  </view>
+
+  <!-- S5 管理员控制台弹窗 -->
+  <view class="modal-mask admin-modal-mask" wx:if="{{showAdminModal}}">
+    <view class="modal-content admin-modal-content">
+      <view class="modal-header">
+        <view class="modal-title-wrap">
+          <text class="dot-badge dot-badge-pulse"></text>
+          <text class="modal-title">管理员控制台 · 平台宏观指标</text>
+        </view>
+        <text class="modal-close" bindtap="closeAdminModal">×</text>
+      </view>
+
+      <!-- 宏观遥测数据面板 (4格) -->
+      <view class="admin-stats-grid">
+        <view class="admin-stat-item">
+          <view class="admin-stat-num stat-mono">{{adminStats.userCount || 0}}</view>
+          <view class="admin-stat-label">注册用户数</view>
+        </view>
+        <view class="admin-stat-item">
+          <view class="admin-stat-num stat-mono">{{adminStats.postCount || 0}}</view>
+          <view class="admin-stat-label">社区帖子数</view>
+        </view>
+        <view class="admin-stat-item">
+          <view class="admin-stat-num stat-mono">{{adminStats.checkinCount || 0}}</view>
+          <view class="admin-stat-label">累计打卡数</view>
+        </view>
+        <view class="admin-stat-item">
+          <view class="admin-stat-num stat-mono">{{adminStats.focusTotalMinutes || 0}}</view>
+          <view class="admin-stat-label">专注总长(分)</view>
+        </view>
+      </view>
+
+      <!-- 用户治理搜索与列表 -->
+      <view class="admin-section-header">
+        <text class="admin-section-title">用户权限治理 (OpenID 脱敏)</text>
+        <text class="admin-user-count stat-mono">共 {{adminUsers.length}} 人</text>
+      </view>
+
+      <view class="admin-search-row">
+        <input 
+          class="admin-search-input" 
+          placeholder="搜索昵称关键词" 
+          value="{{adminKeyword}}"
+          bindinput="onInputAdminKeyword"
+          bindconfirm="searchAdminUsers"
+        />
+        <button class="btn-search" bindtap="searchAdminUsers">检索</button>
+      </view>
+
+      <scroll-view class="admin-user-list" scroll-y="true">
+        <view wx:if="{{adminUsers.length === 0}}" class="empty-tip">
+          暂无匹配的用户记录
+        </view>
+        <view wx:for="{{adminUsers}}" wx:key="id" class="admin-user-row">
+          <view class="user-row-left">
+            <view class="user-row-name-line">
+              <text class="user-row-name">{{item.nickname || '匿名学员'}}</text>
+              <text class="user-role-tag {{item.role === 1 ? 'tag-admin' : ''}}">
+                {{item.role === 1 ? '管理员' : '学员'}}
+              </text>
+              <text class="user-status-tag {{item.status === 0 ? 'tag-normal' : 'tag-banned'}}">
+                {{item.status === 0 ? '正常' : '已封禁'}}
+              </text>
+            </view>
+            <view class="user-row-sub">
+              <text class="user-row-id stat-mono">ID: {{item.id}}</text>
+              <text class="user-row-openid stat-mono">{{item.openid}}</text>
+            </view>
+          </view>
+          <view class="user-row-right" wx:if="{{item.role !== 1}}">
+            <button 
+              wx:if="{{item.status === 0}}" 
+              class="btn-user-action btn-ban" 
+              bindtap="toggleUserStatus" 
+              data-id="{{item.id}}" 
+              data-status="1">
+              封禁
+            </button>
+            <button 
+              wx:else 
+              class="btn-user-action btn-unban" 
+              bindtap="toggleUserStatus" 
+              data-id="{{item.id}}" 
+              data-status="0">
+              解封
+            </button>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

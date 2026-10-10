@@ -1,0 +1,128 @@
+<!-- pages/checkin/checkin.wxml - 北欧素雅森系打卡与AI复盘 -->
+<view class="container checkin-page">
+  <!-- 打卡笔记本表单卡片 -->
+  <view class="card">
+    <view class="card-title">
+      <view class="title-left">
+        <text>今日学习打卡</text>
+        <text class="checked-badge" wx:if="{{isTodayChecked}}">
+          <text class="dot-badge"></text>今日已达成
+        </text>
+      </view>
+      <text class="date-badge stat-mono">{{todayStr}}</text>
+    </view>
+
+    <!-- 快捷心得便签栏 -->
+    <view class="quick-tag-bar">
+      <text class="quick-tag-label">灵感便签：</text>
+      <view class="quick-tag-pills">
+        <view 
+          wx:for="{{quickTags}}" 
+          wx:key="*this" 
+          class="quick-tag-item"
+          data-tag="{{item}}"
+          bindtap="insertTag">
+          + {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 心得输入区 (Cotton Notepad Page) -->
+    <textarea 
+      class="content-input" 
+      placeholder="记录今天学了什么内容、有哪些小收获或卡壳难点？提交后，你的AI专属导师会为你进行温和复盘与指引..." 
+      maxlength="500"
+      value="{{content}}"
+      bindinput="onInputContent"
+    />
+    <view class="word-counter stat-mono {{content.length > 450 ? 'word-counter-warn' : ''}}">
+      <text wx:if="{{content.length > 450}}" class="warn-tip">即将达到上限 </text>
+      <text>{{content.length}} / 500</text>
+    </view>
+
+    <!-- 配图选择 (拍立得轻量相纸) -->
+    <view class="image-uploader">
+      <view class="uploader-header">
+        <text class="uploader-dot"></text>
+        <text class="uploader-title">学习笔记 / 错题配图 (可选)</text>
+      </view>
+      <view class="image-preview-wrap" wx:if="{{imageUrl}}">
+        <image class="preview-img" src="{{imageUrl}}" mode="aspectFill" bindtap="previewImage"></image>
+        <view class="remove-btn" bindtap="removeImage">×</view>
+      </view>
+      <view class="upload-trigger" wx:else bindtap="chooseImage">
+        <text class="plus-icon">+</text>
+        <text class="upload-text">添加图片</text>
+      </view>
+    </view>
+
+    <button class="btn-primary btn-submit" bindtap="submitCheckin" loading="{{submitting}}">
+      {{submitting ? 'AI 导师深度思考中...' : '提交打卡 · 唤醒 AI 导师复盘'}}
+    </button>
+  </view>
+
+  <!-- 最新 AI 复盘卡片 (Editorial Archival AI Review Card) -->
+  <view class="card ai-card" wx:if="{{latestAiReview}}">
+    <view class="ai-watermark">AI</view>
+    <view class="ai-header">
+      <view class="ai-tag">
+        <text class="dot-badge dot-badge-pulse"></text>
+        <text>AI 导师深度复盘</text>
+      </view>
+      <view class="ai-header-right">
+        <text class="skip-btn" wx:if="{{isTyping}}" bindtap="skipTyping">展开全文</text>
+        <text class="ai-badge">智学导师 AI 引擎</text>
+      </view>
+    </view>
+    <view class="ai-body">
+      <text class="ai-body-text">{{displayedAiReview || latestAiReview}}</text>
+      <text class="typing-cursor" wx:if="{{isTyping}}">▌</text>
+    </view>
+    <view class="ai-footer">
+      <text class="ai-tip">今日复盘已自动收录至你的学业成长档案</text>
+    </view>
+  </view>
+
+  <!-- 历史打卡足迹列表 -->
+  <view class="card history-card">
+    <view class="card-title">
+      <view class="title-left">
+        <text>自律打卡足迹</text>
+      </view>
+      <text class="text-muted stat-mono">共 {{historyList.length}} 篇笔记</text>
+    </view>
+
+    <view wx:if="{{historyList.length === 0}}" class="empty-tip">
+      暂无打卡记录，记录下今天的第一笔专注收获吧。
+    </view>
+
+    <view wx:for="{{historyList}}" wx:key="id" class="history-item">
+      <view class="item-header">
+        <text class="item-date stat-mono">{{item.timeDesc}}</text>
+        <text class="status-tag {{item.status === 1 ? 'tag-passed' : 'tag-pending'}}">
+          {{item.status === 1 ? '已归档' : '待处理'}}
+        </text>
+      </view>
+
+      <view class="item-content">{{item.content}}</view>
+
+      <image 
+        wx:if="{{item.imageUrl}}" 
+        class="item-img" 
+        src="{{item.imageUrl}}" 
+        mode="aspectFill"
+        data-src="{{item.imageUrl}}"
+        bindtap="previewHistoryImage">
+      </image>
+
+      <!-- AI 复盘展开气泡 -->
+      <view class="item-ai-box" wx:if="{{item.aiReview}}">
+        <view class="item-ai-title">
+          <text class="dot-badge"></text>
+          <text>AI 导师复盘回音</text>
+        </view>
+        <view class="item-ai-content">{{item.aiReview}}</view>
+      </view>
+    </view>
+  </view>
+</view>

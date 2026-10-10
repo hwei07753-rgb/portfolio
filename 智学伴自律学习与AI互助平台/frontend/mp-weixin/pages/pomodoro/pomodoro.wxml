@@ -1,0 +1,148 @@
+<!-- pages/pomodoro/pomodoro.wxml - 北欧素雅森系专注设计 -->
+<view class="container pomodoro-page">
+  <!-- 标签选择区 (空闲时可选) -->
+  <view class="tag-selector" wx:if="{{status === 'IDLE'}}">
+    <view class="label-header">
+      <view class="label-title-wrap">
+        <text class="label-dot"></text>
+        <text class="label-text">当前专注目标分类</text>
+      </view>
+      <text class="label-hint">点击选择标签</text>
+    </view>
+    <view class="tags-list">
+      <view 
+        wx:for="{{presetTags}}" 
+        wx:key="*this" 
+        class="tag-pill {{currentTag === item ? 'tag-pill-active' : ''}}"
+        data-tag="{{item}}"
+        bindtap="onSelectTag">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 倒计时主体呼吸圆盘 (带动态环形进度条与等宽数字) -->
+  <view class="timer-card {{status === 'RUNNING' ? 'timer-card-running' : ''}}">
+    <!-- 环形动态进度外圈 (Sunken Instrument Bezel) -->
+    <view class="progress-ring-outer" style="background: conic-gradient(#276449 0deg, #276449 {{progressAngle}}deg, #DCE4D8 {{progressAngle}}deg 360deg);">
+      <view class="breathing-ring {{status === 'RUNNING' ? 'ring-active' : ''}}">
+        <view class="dial-inner-track">
+          <view class="current-tag-badge">
+            <text class="badge-leaf">🌿</text>
+            <text>{{currentTag}}</text>
+          </view>
+          <view class="countdown-display stat-mono">{{remainTimeString}}</view>
+          <view class="status-tip">
+            <text wx:if="{{status === 'IDLE'}}">准备好开启一段沉静专注了吗？</text>
+            <text wx:elif="{{status === 'RUNNING'}}" class="status-tip-running">
+              <text class="dot-badge dot-badge-pulse"></text>心无旁骛沉浸中 · 已完成 {{progressPercent}}%
+            </text>
+            <text wx:elif="{{status === 'PAUSED'}}">已暂停，稍事调息，喝口温水吧</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时长预设胶囊 (仅空闲时可见) -->
+    <view class="duration-presets" wx:if="{{status === 'IDLE'}}">
+      <view 
+        wx:for="{{presetDurations}}" 
+        wx:key="minutes" 
+        class="preset-item stat-mono {{selectedDuration === item.minutes ? 'preset-active' : ''}}"
+        data-minutes="{{item.minutes}}"
+        bindtap="onSelectDuration">
+        {{item.label}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 沉浸式伴学白噪音胶囊 -->
+  <view class="noise-card">
+    <view class="noise-header">
+      <view class="noise-title-wrap">
+        <text class="noise-dot"></text>
+        <text class="noise-title">伴学环境白噪音</text>
+      </view>
+      <text class="noise-state {{currentNoise !== 'none' ? 'noise-state-active' : ''}}">
+        <text class="dot-badge dot-badge-pulse"></text>原声陪伴中
+      </text>
+    </view>
+    <view class="noise-pills">
+      <view 
+        wx:for="{{whiteNoiseList}}" 
+        wx:key="id" 
+        class="noise-pill {{currentNoise === item.id ? 'noise-pill-active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onSelectNoise">
+        <text class="noise-icon">{{item.icon}}</text>
+        <text class="noise-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮控制区 -->
+  <view class="action-bar">
+    <block wx:if="{{status === 'IDLE'}}">
+      <button class="btn-primary btn-large" bindtap="startTimer">开启专注时光</button>
+    </block>
+
+    <block wx:elif="{{status === 'RUNNING'}}">
+      <button class="btn-action btn-pause" bindtap="pauseTimer">暂停</button>
+      <button class="btn-action btn-finish" bindtap="completeTimerEarly">达成完成</button>
+      <button class="btn-action btn-abandon" bindtap="abandonTimer">放弃</button>
+    </block>
+
+    <block wx:elif="{{status === 'PAUSED'}}">
+      <button class="btn-action btn-primary flex-2" bindtap="resumeTimer">继续专注</button>
+      <button class="btn-action btn-abandon flex-1" bindtap="abandonTimer">放弃本次</button>
+    </block>
+  </view>
+
+  <!-- 今日专注列表 (手账足迹) -->
+  <view class="card history-card">
+    <view class="card-title">
+      <view class="title-left">
+        <text>今日专注印记</text>
+      </view>
+      <text class="record-count-badge stat-mono">共 {{todayRecords.length}} 轮专注</text>
+    </view>
+
+    <view wx:if="{{todayRecords.length === 0}}" class="empty-tip">
+      今日尚无专注印记。开启你的第一个番茄钟，写下今天的小小成就吧。
+    </view>
+
+    <view wx:for="{{todayRecords}}" wx:key="id" class="record-item">
+      <view class="record-left">
+        <view class="record-tag-badge">{{item.tag || '通用学习'}}</view>
+        <text class="record-time stat-mono">{{item.timeDesc}}</text>
+      </view>
+      <view class="record-right">
+        <text class="record-duration stat-mono">+{{item.durationMinutes}}m</text>
+        <text class="record-badge {{item.status === 0 ? 'badge-success' : 'badge-abandon'}}">
+          {{item.status === 0 ? '达成' : '未终'}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 专注完成专属手账印章庆祝弹窗 (Nordic Letterpress Seal) -->
+  <view class="modal-mask stamp-modal-mask" wx:if="{{showStampModal}}">
+    <view class="modal-content stamp-modal-content">
+      <view class="stamp-seal-badge">
+        <view class="seal-inner-circle">
+          <text class="seal-main-text">{{stampData.sealTitle}}</text>
+          <text class="seal-sub-text">智学伴 · 笃行印记</text>
+        </view>
+      </view>
+      <view class="stamp-title">专注达成 · 获授学业印章</view>
+      <view class="stamp-pill-row">
+        <text class="stamp-pill-tag">#{{stampData.tag}}</text>
+        <text class="stamp-pill-mins stat-mono">+{{stampData.minutes}} 分钟</text>
+      </view>
+      <view class="stamp-quote-box">
+        “{{stampData.quote}}”
+      </view>
+      <button class="btn-primary stamp-btn" bindtap="closeStampModal">收录印章 · 继续前行</button>
+    </view>
+  </view>
+</view>

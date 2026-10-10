@@ -1,0 +1,204 @@
+/** app.wxss - 北欧高质感森系微触排版规范 (Nordic Tactile Editorial Design) **/
+page {
+  /* 调色板定义 (Nordic Botanical Linen & Forest Charcoal) */
+  --primary-color: #276449;        /* 北欧森林墨绿 - 沉稳主色 */
+  --primary-light: #EAF0E2;        /* 柔和草本淡绿 */
+  --primary-dark: #1E4E38;         /* 苍松墨绿 */
+  
+  --accent-sage: #4E7C65;          /* 鼠尾草灰绿 */
+  --accent-sage-light: #EEF4EB;
+  --accent-brass: #B59955;         /* 静谧铜金 */
+  --accent-brass-light: #FAF5E9;
+  --accent-terracotta: #C57962;    /* 陶土赭红 */
+  --accent-terracotta-light: #FDF1ED;
+  
+  --text-main: #20352C;            /* 森林石墨深黑 (沉静典雅、极佳对比) */
+  --text-sub: #5E7368;             /* 鼠尾草灰绿 (清晰质感辅助字) */
+  --text-light: #8E9F95;           /* 晨雾淡浅绿 */
+  
+  --bg-page: #F6F7F2;              /* 自然棉麻纸白底色 */
+  --bg-card: #FCFDF9;              /* 象牙柔白卡片 */
+  --bg-sunken: #F0F4EC;            /* 微凹陷遥测槽底色 (Sunken Bevel) */
+  --border-color: #E2E8DC;         /* 细致工整边框 */
+  --border-dark: #D2DCD0;          /* 进阶边框线 */
+  
+  /* 尺度体系 */
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-full: 999rpx;
+  
+  /* 触觉微阴影与高光系统 (Bevel & Highlight) */
+  --shadow-card: inset 0 1rpx 0 #FFFFFF, 0 2rpx 8rpx rgba(39, 100, 73, 0.03), 0 8rpx 28rpx -4rpx rgba(39, 100, 73, 0.07);
+  --shadow-sm: inset 0 1rpx 0 #FFFFFF, 0 2rpx 6rpx rgba(39, 100, 73, 0.03);
+  --shadow-sunken: inset 0 2rpx 6rpx rgba(32, 53, 44, 0.06), 0 1rpx 0 #FFFFFF;
+  --shadow-btn: inset 0 1rpx 0 rgba(255, 255, 255, 0.28), 0 6rpx 18rpx -2rpx rgba(39, 100, 73, 0.38);
+  --shadow-btn-active: inset 0 2rpx 4rpx rgba(0, 0, 0, 0.2), 0 1rpx 4rpx rgba(39, 100, 73, 0.2);
+  
+  /* 字体族系 */
+  --font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: -apple-system-font, "SF Mono", "Consolas", "Roboto Mono", "Courier New", monospace;
+
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, button, input, textarea {
+  box-sizing: border-box;
+}
+
+/* 页面通用容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 24rpx 28rpx 60rpx;
+  background-color: var(--bg-page);
+}
+
+/* 素雅森系微触感卡片 (Letterpress Beveled Card) */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-card);
+  border: 1.5rpx solid var(--border-color);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.6rpx;
+}
+
+/* 状态指示小绿点 */
+.dot-badge {
+  display: inline-block;
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--primary-color);
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+
+.dot-badge-pulse {
+  box-shadow: 0 0 0 0 rgba(39, 100, 73, 0.4);
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(39, 100, 73, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 8rpx rgba(39, 100, 73, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(39, 100, 73, 0);
+  }
+}
+
+/* 主按钮 (微凸压实体按键，带柔和光泽顶线与触感按压) */
+.btn-primary {
+  background: linear-gradient(180deg, #2D7455 0%, #215A42 100%);
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  padding: 24rpx 44rpx;
+  text-align: center;
+  box-shadow: var(--shadow-btn);
+  border: 1.5rpx solid #1B4C37;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  letter-spacing: 1.5rpx;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.18);
+}
+
+.btn-primary:active {
+  transform: translateY(3rpx);
+  box-shadow: var(--shadow-btn-active);
+  background: #1C4D38;
+}
+
+/* 辅按钮 (棉麻质感微槽胶囊) */
+.btn-outline {
+  background: var(--bg-card);
+  color: var(--primary-color);
+  border: 1.5rpx solid var(--border-dark);
+  font-size: 28rpx;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  padding: 20rpx 36rpx;
+  text-align: center;
+  box-shadow: inset 0 1rpx 0 #FFFFFF, 0 2rpx 4rpx rgba(0, 0, 0, 0.02);
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+
+.btn-outline:active {
+  transform: translateY(2rpx);
+  background: var(--primary-light);
+}
+
+/* 标签小胶囊 (Pill Tags) */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 22rpx;
+  padding: 6rpx 18rpx;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-weight: 600;
+  border: 1rpx solid #D5E2CF;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+  letter-spacing: 0.5rpx;
+}
+
+.tag-sage {
+  background: var(--accent-sage-light);
+  color: var(--accent-sage);
+  border: 1rpx solid #D2DFD5;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.tag-brass {
+  background: var(--accent-brass-light);
+  color: #8C6F2A;
+  border: 1rpx solid #EEDEB8;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+.tag-terracotta {
+  background: var(--accent-terracotta-light);
+  color: var(--accent-terracotta);
+  border: 1rpx solid #F6D6CC;
+  box-shadow: inset 0 1rpx 0 #FFFFFF;
+}
+
+/* 等宽数字排版 */
+.stat-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5rpx;
+}
+
+/* 空状态素雅排版 */
+.empty-tip {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: var(--text-sub);
+  font-size: 26rpx;
+  line-height: 1.7;
+}
